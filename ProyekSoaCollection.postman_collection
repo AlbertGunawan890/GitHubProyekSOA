@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "3ae4ff46-b497-401a-847b-45c776bf82bc",
+		"name": "Proyek Soa Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25278569"
+	},
+	"item": [
+		{
+			"name": "Register Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "sk5y216e2a",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nama",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "qwe",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "a123",
+							"type": "text"
+						},
+						{
+							"key": "nik",
+							"value": "123123",
+							"type": "text"
+						},
+						{
+							"key": "alamat",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "notelp",
+							"value": "123123",
+							"type": "text"
+						}
+					]
+				},
+				"url": "localhost:3000/api/register/admin"
+			},
+			"response": []
+		},
+		{
+			"name": "Register Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "sk5y216e2a",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nama",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "shawn",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "a123",
+							"type": "text"
+						},
+						{
+							"key": "nik",
+							"value": "123123",
+							"type": "text"
+						},
+						{
+							"key": "alamat",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "notelp",
+							"value": "123123",
+							"type": "text"
+						}
+					]
+				},
+				"url": "localhost:3000/api/register/customer"
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "sk5y216e2a",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nama",
+							"value": "a",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "username",
+							"value": "shawn",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "a123",
+							"type": "text"
+						},
+						{
+							"key": "nik",
+							"value": "123123",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "alamat",
+							"value": "a",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "notelp",
+							"value": "123123",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": "localhost:3000/api/login"
+			},
+			"response": []
+		}
+	]
+}

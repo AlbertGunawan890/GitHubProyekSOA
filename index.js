@@ -44,9 +44,9 @@ app.post("/api/register/customer", async (req, res) => {
 
         if (double == 0) 
         {
-            if (duser.length + 1 < 10) { id_user = "U00" + (duser.length + 1).toString(); }
-            else if (duser.length + 1 < 100) { id_user = "U0" + (duser.length + 1).toString(); }
-            else { id_user = "U" + (duser.length + 1).toString(); }
+            if (duser.length + 1 < 10) { id_user = "C00" + (duser.length + 1).toString(); }
+            else if (duser.length + 1 < 100) { id_user = "C0" + (duser.length + 1).toString(); }
+            else { id_user = "C" + (duser.length + 1).toString(); }
 
             user.create({
                 id_user: id_user,
