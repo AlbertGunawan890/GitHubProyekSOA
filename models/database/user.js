@@ -1,7 +1,7 @@
 const Sequelize  = require('sequelize');
-const {getDB}   = require("./dbase");
+const {getDB}   = require("../../dbase");
 const sequelize = getDB(); 
-const Tblbeli = sequelize.define('user', {
+const user = sequelize.define('user', {
     id_user: {
         type: Sequelize.STRING,
         primaryKey: true
