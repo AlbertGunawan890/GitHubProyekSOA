@@ -158,8 +158,7 @@ app.post("/api/login", async (req, res) => {
             password: joi.string().required(),
         }).validateAsync(req.body);
 
-        var [unik] = await sequelize.query(`select * from users where username_user = "${req.body.username}"`);
-
+        var unik = await user.findAll({where : {username_user : req.body.username}})
         if (unik.length > 0) {
             var [unik] = await sequelize.query(`select * from users where username_user = "${req.body.username}" and password_user = "${req.body.password}"`);
             if (unik.length > 0) {
