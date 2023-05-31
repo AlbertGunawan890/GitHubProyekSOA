@@ -37,7 +37,7 @@ app.post("/api/register/customer", async (req, res) => {
     var id_user = "";
     await user.findAll().then((duser) => {
         var double = 0;
-        var tipeUser = "user";
+        var tipeUser = "customer";
         var saldo = 0;
 
         for (var i = 0; i < duser.length; i++) {
@@ -249,3 +249,20 @@ app.post("/api/topup/:userid", async (req, res) => {
     }
 });
 
+app.get("/api/cek_saldo/:userid", async (req, res) =>{
+
+    try {
+        userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+        if (userlogin.userlogin.tipe_user == "user") {
+            var datauser = await user.findAll({ where: { id_user: req.params.userid } });
+            if (datauser.length > 0) {
+                // console.log(datauser[0].saldo_user);
+                return res.status(200).send({"saldo user": datauser[0].saldo_user});
+            } else {
+                return res.status(200).send({ "message": "user id tidak ditemukan" });
+            }
+        }
+    } catch (error) {
+        res.status(400).send({ "message": "BUKAN ADMIN" });
+    }
+});
