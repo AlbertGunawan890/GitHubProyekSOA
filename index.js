@@ -8,6 +8,9 @@ const { getDB } = require("./dbase");
 const joi = require('joi');
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
+const dbase = require("./dbase");
+const Barang = require("./models/database/barang");
+const Jenis = require("./models/database/jenis");
 const sequelize = getDB();
 
 const user = require('./models/database/user')(sequelize, Sequelize);
@@ -265,3 +268,24 @@ app.get("/api/cek_saldo/:userid", async (req, res) =>{
         res.status(400).send({ "message": "BUKAN ADMIN" });
     }
 });
+app.get("/api/list_barang/:min/:max",async function (req,res) {
+    let data_barang=Barang.findAll({
+        include:[{
+            model:Jenis
+        }],
+        where:{
+            [Op.gte]:[
+                {harga:req.params.min}
+            ],
+            [Op.lte]:[
+                {harga:req.params.max}
+            ]
+        }
+    });
+    return res.status(200).send(data_barang)
+    // console.log(data_barang);
+});
+
+app.post("/create_auction",async function (req,res) {
+    
+})

@@ -1,6 +1,7 @@
 const {getDB}   = require("../../dbase");
 const sequelize = getDB();
 const {Model, DataTypes} = require('sequelize');
+const Jenis = require("./jenis");
 
 class Barang extends Model {}
 Barang.init(
@@ -18,7 +19,10 @@ Barang.init(
         id_jenis:{
             type: DataTypes.STRING,
             allowNull:false,
-            references: id_jenis
+            references: {
+                model: Jenis,
+                key:'id_jenis'
+            }
         },
         harga: {
             type: DataTypes.STRING,
