@@ -332,3 +332,41 @@ app.post("/api/admin/addBarang", async function (req, res){
      })
 
 });
+
+ app.post("/api/admin/addJenis", async function (req, res){
+
+    let jenis = null;
+    let {nama_jenis} = req.body
+    const schema = joi.object ({
+        nama_jenis: joi.string().min(5).required()
+    })
+    try {
+        await schema.validateAsync(req.body)
+        let newIdPrefix = nama_jenis.substring(0,1).toUpperCase()
+        let keyword = `%${newIdPrefix}%`
+        let similarUID = await Barang.findAll(
+            {
+                where:{
+                    id_jenis:{
+                        [Op.like]:keyword
+                    }
+                }
+            }
+        )
+        let newId = newIdPrefix + String(similarUID.length  +1).padStart(4,'0')
+        jenis = await Jenis.create({
+            id_jenis: newId,
+            nama_jenis: nama_jenis
+        })
+    } catch (error) {
+        return res.status(400).send({
+            message: "Insert Failed",
+            error,
+        });
+    }
+    
+    return res.status(201).send({
+        jenis
+    })
+
+ });
