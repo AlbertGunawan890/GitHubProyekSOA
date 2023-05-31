@@ -197,16 +197,70 @@
 		{
 			"name": "Add Barang",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nama_barang",
+							"value": "initestuploadbarang",
+							"type": "default"
+						},
+						{
+							"key": "id_jenis",
+							"value": "T0001",
+							"type": "default"
+						},
+						{
+							"key": "harga",
+							"value": "1000000",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/admin/addBarang",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"admin",
+						"addBarang"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Add Jenis",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nama_jenis",
+							"value": "Mobil",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/admin/addJenis",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"admin",
+						"addJenis"
+					]
+				}
 			},
 			"response": []
 		}
