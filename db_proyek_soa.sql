@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2023 at 08:35 AM
+-- Generation Time: May 31, 2023 at 09:34 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -60,6 +60,7 @@ CREATE TABLE `jenis` (
 --
 
 INSERT INTO `jenis` (`id_jenis`, `nama_jenis`) VALUES
+('M0001', 'Mobil'),
 ('T0001', 'Test');
 
 -- --------------------------------------------------------
