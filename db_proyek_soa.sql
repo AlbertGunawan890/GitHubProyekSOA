@@ -1,131 +1,102 @@
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: May 31, 2023 at 09:34 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.1.12
+/*
+SQLyog Community v13.1.9 (64 bit)
+MySQL - 10.4.27-MariaDB : Database - db_proyek_soa
+*********************************************************************
+*/
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+/*!40101 SET NAMES utf8 */;
 
+/*!40101 SET SQL_MODE=''*/;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_proyek_soa` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
---
--- Database: `db_proyek_soa`
---
+USE `db_proyek_soa`;
 
--- --------------------------------------------------------
+/*Table structure for table `auction` */
 
---
--- Table structure for table `barang`
---
+DROP TABLE IF EXISTS `auction`;
+
+CREATE TABLE `auction` (
+  `id_auction` varchar(255) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `tanggal` date NOT NULL,
+  `waktu_awal` time NOT NULL,
+  `waktu_akhir` time NOT NULL,
+  `id_barang` varchar(255) NOT NULL,
+  `minimal_bid` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_auction`),
+  KEY `id_barang` (`id_barang`),
+  CONSTRAINT `auction_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `auction` */
+
+insert  into `auction`(`id_auction`,`nama`,`tanggal`,`waktu_awal`,`waktu_akhir`,`id_barang`,`minimal_bid`) values 
+('A0001','a','2021-01-05','11:06:30','11:06:30','B0001','1000');
+
+/*Table structure for table `barang` */
+
+DROP TABLE IF EXISTS `barang`;
 
 CREATE TABLE `barang` (
-  `Id_barang` varchar(12) NOT NULL,
+  `id_barang` varchar(255) NOT NULL,
   `nama_barang` varchar(255) NOT NULL,
-  `id_jenis` varchar(12) NOT NULL,
-  `harga` int(12) NOT NULL
+  `id_jenis` varchar(255) NOT NULL,
+  `harga` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_barang`),
+  KEY `id_jenis` (`id_jenis`),
+  CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id_jenis`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `barang`
---
+/*Data for the table `barang` */
 
-INSERT INTO `barang` (`Id_barang`, `nama_barang`, `id_jenis`, `harga`) VALUES
-('B0001', 'initestuploadbarang', 'T0001', 1000000),
-('B0002', 'initestuploadbarang', 'T0001', 1000000),
-('B0003', 'initestuploadbarang', 'T0001', 1000000),
-('B0004', 'initestuploadbarang', 'T0001', 1000000);
+insert  into `barang`(`id_barang`,`nama_barang`,`id_jenis`,`harga`) values 
+('B0001','initestuploadbarang','M0001','10000');
 
--- --------------------------------------------------------
+/*Table structure for table `jenis` */
 
---
--- Table structure for table `jenis`
---
+DROP TABLE IF EXISTS `jenis`;
 
 CREATE TABLE `jenis` (
-  `id_jenis` varchar(12) NOT NULL,
-  `nama_jenis` varchar(255) NOT NULL
+  `id_jenis` varchar(255) NOT NULL,
+  `nama_jenis` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_jenis`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `jenis`
---
+/*Data for the table `jenis` */
 
-INSERT INTO `jenis` (`id_jenis`, `nama_jenis`) VALUES
-('M0001', 'Mobil'),
-('T0001', 'Test');
+insert  into `jenis`(`id_jenis`,`nama_jenis`) values 
+('M0001','Mobil');
 
--- --------------------------------------------------------
+/*Table structure for table `users` */
 
---
--- Table structure for table `users`
---
+DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id_user` varchar(10) DEFAULT NULL,
-  `nama_user` varchar(255) DEFAULT NULL,
+  `id_user` varchar(255) NOT NULL,
+  `nama_user` varchar(255) NOT NULL,
   `username_user` varchar(255) NOT NULL,
-  `password_user` varchar(255) DEFAULT NULL,
-  `nik_user` varchar(16) DEFAULT NULL,
-  `alamat_user` varchar(255) DEFAULT NULL,
-  `notelp_user` varchar(15) DEFAULT NULL,
-  `tipe_user` varchar(30) DEFAULT NULL,
-  `saldo_user` int(255) DEFAULT NULL,
-  `status_user` int(2) DEFAULT NULL
+  `password_user` varchar(255) NOT NULL,
+  `nik_user` int(11) NOT NULL,
+  `alamat_user` varchar(255) NOT NULL,
+  `notelp_user` int(11) NOT NULL,
+  `tipe_user` varchar(255) NOT NULL,
+  `saldo_user` varchar(255) NOT NULL,
+  `status_user` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `users`
---
+/*Data for the table `users` */
 
-INSERT INTO `users` (`id_user`, `nama_user`, `username_user`, `password_user`, `nik_user`, `alamat_user`, `notelp_user`, `tipe_user`, `saldo_user`, `status_user`) VALUES
-('U001', 'a', 'aa', 'a', '123123', 'a', '123123', 'user', 20000, 0),
-('A002', 'a', 'qwe', 'a123', '123123', 'a', '123123', 'admin', 0, NULL),
-('C003', 'a', 'shawn', 'a123', '123123', 'a', '123123', 'user', 0, NULL);
+insert  into `users`(`id_user`,`nama_user`,`username_user`,`password_user`,`nik_user`,`alamat_user`,`notelp_user`,`tipe_user`,`saldo_user`,`status_user`) values 
+('A001','a','qwe','a123',123123,'a',123123,'admin','0','1'),
+('A002','a','qwe','a123',123123,'a',123123,'admin','0','1');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `barang`
---
-ALTER TABLE `barang`
-  ADD PRIMARY KEY (`Id_barang`),
-  ADD KEY `id_jenis` (`id_jenis`);
-
---
--- Indexes for table `jenis`
---
-ALTER TABLE `jenis`
-  ADD PRIMARY KEY (`id_jenis`),
-  ADD UNIQUE KEY `id_jenis` (`id_jenis`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`username_user`);
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `barang`
---
-ALTER TABLE `barang`
-  ADD CONSTRAINT `id_jenis` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id_jenis`);
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

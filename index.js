@@ -272,29 +272,29 @@ app.get("/api/cek_saldo/:userid", async (req, res) =>{
 });
 app.get("/api/list_barang/:min/:max",async function (req,res) {
     let data_barang= await Barang.findAll({
-        include:[{
-            model:Jenis
-        }],
         where:{
-            [Op.gte]:[
-                {harga:req.params.min}
-            ],
-            [Op.lte]:[
-                {harga:req.params.max}
-            ]
-        }
+            harga: {
+                [Op.between]: [parseInt(req.params.min),parseInt(req.params.max)]
+            },
+        },
+        // include:[{
+        //     model:Jenis,
+        // }],
+        
     });
-    return res.status(200).send(data_barang)
-    // console.log(data_barang);
+    if(data_barang.length==0){
+        return res.status(404).send({"message":"barang tidak ditemukan!"});
+    }
+    return res.status(200).send(data_barang);
 });
 
-app.post("/create_auction",async function (req,res) {
-    let {nama,tanggal,waktu_awal,waktu_akhir,barang_id,minimal}=req.body;
+app.post("/api/create_auction",async function (req,res) {
+    let {nama,tanggal,waktu_awal,waktu_akhir,id_barang,minimal_bid}=req.body;
     try {
-        userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+        let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
         if (userlogin.userlogin.tipe_user == "admin") {
-            let similarUID = await Auction.findAll();
-            let newId = newIdPrefix + String(similarUID.length  +1).padStart(4,'0')
+            let data_auction = await Auction.findAll();
+            let newId = "A" + String(data_auction.length  +1).padStart(4,'0')
             Auction.create({
                 id_auction:newId,
                 nama:nama,
@@ -302,7 +302,16 @@ app.post("/create_auction",async function (req,res) {
                 waktu_awal:waktu_awal,
                 waktu_akhir:waktu_akhir,
                 id_barang:id_barang,
-                
+                minimal_bid:minimal_bid
+            });
+            return res.status(200).send({
+                id_auction:newId,
+                nama:nama,
+                tanggal:tanggal,
+                waktu_awal:waktu_awal,
+                waktu_akhir:waktu_akhir,
+                id_barang:id_barang,
+                minimal_bid:minimal_bid
             })
         }else{
             res.status(400).send({ "message": "BUKAN ADMIN" });

@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "bbe1db2c-9849-45b3-aa97-7b5d22c5be7e",
+		"_postman_id": "6058edb9-4b41-4205-a7b5-5c6777c0967f",
 		"name": "Proyek Soa Collection",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27017339"
 	},
 	"item": [
 		{
@@ -195,6 +196,36 @@
 			"response": []
 		},
 		{
+			"name": "Add Jenis",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nama_jenis",
+							"value": "Mobil",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/admin/addJenis",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"admin",
+						"addJenis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add Barang",
 			"request": {
 				"method": "POST",
@@ -235,30 +266,98 @@
 			"response": []
 		},
 		{
-			"name": "Add Jenis",
+			"name": "Create Auction",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDEiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InF3ZSIsInBhc3N3b3JkX3VzZXIiOiJhMTIzIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiYWRtaW4iLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODU1MjEyMDYsImV4cCI6MTY4NTUyNzIwNn0.CoI-fiYX2WdzzZvYqI66ymRVE6tsW_NRGOmYBsxZzpQ",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "nama_jenis",
-							"value": "Mobil",
-							"type": "default"
+							"key": "nama",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "tanggal",
+							"value": "01/05/2021",
+							"type": "text"
+						},
+						{
+							"key": "waktu_awal",
+							"value": "11:06:30",
+							"type": "text"
+						},
+						{
+							"key": "waktu_akhir",
+							"value": "11:06:30",
+							"type": "text"
+						},
+						{
+							"key": "id_barang",
+							"value": "B0001",
+							"type": "text"
+						},
+						{
+							"key": "minimal_bid",
+							"value": "1000",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/admin/addJenis",
+					"raw": "localhost:3000/api/create_auction",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"admin",
-						"addJenis"
+						"create_auction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Barang",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:3000/api/list_barang/:min/:max",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"list_barang",
+						":min",
+						":max"
+					],
+					"variable": [
+						{
+							"key": "min",
+							"value": "5000"
+						},
+						{
+							"key": "max",
+							"value": "20000"
+						}
 					]
 				}
 			},

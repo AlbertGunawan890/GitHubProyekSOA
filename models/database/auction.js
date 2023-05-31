@@ -17,7 +17,7 @@ Auction.init(
             allowNull:false
         },
         tanggal: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull:false
         },
         waktu_awal: {
