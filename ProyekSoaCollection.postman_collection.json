@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "3ae4ff46-b497-401a-847b-45c776bf82bc",
+		"_postman_id": "bbe1db2c-9849-45b3-aa97-7b5d22c5be7e",
 		"name": "Proyek Soa Collection",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "25278569"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -53,7 +52,18 @@
 						}
 					]
 				},
-				"url": "localhost:3000/api/register/admin"
+				"url": {
+					"raw": "localhost:3000/api/register/admin",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"register",
+						"admin"
+					]
+				}
 			},
 			"response": []
 		},
@@ -104,7 +114,18 @@
 						}
 					]
 				},
-				"url": "localhost:3000/api/register/customer"
+				"url": {
+					"raw": "localhost:3000/api/register/customer",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"register",
+						"customer"
+					]
+				}
 			},
 			"response": []
 		},
@@ -159,7 +180,33 @@
 						}
 					]
 				},
-				"url": "localhost:3000/api/login"
+				"url": {
+					"raw": "localhost:3000/api/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Barang",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Add Jenis",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		}
