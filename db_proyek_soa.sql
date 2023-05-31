@@ -1,24 +1,72 @@
-/*
-SQLyog Community v13.1.9 (64 bit)
-MySQL - 10.4.27-MariaDB : Database - db_proyek_soa
-*********************************************************************
-*/
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: May 31, 2023 at 08:35 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
 
-/*!40101 SET NAMES utf8 */;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
-/*!40101 SET SQL_MODE=''*/;
 
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_proyek_soa` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-USE `db_proyek_soa`;
+--
+-- Database: `db_proyek_soa`
+--
 
-/*Table structure for table `users` */
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `users`;
+--
+-- Table structure for table `barang`
+--
+
+CREATE TABLE `barang` (
+  `Id_barang` varchar(12) NOT NULL,
+  `nama_barang` varchar(255) NOT NULL,
+  `id_jenis` varchar(12) NOT NULL,
+  `harga` int(12) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barang`
+--
+
+INSERT INTO `barang` (`Id_barang`, `nama_barang`, `id_jenis`, `harga`) VALUES
+('B0001', 'initestuploadbarang', 'T0001', 1000000),
+('B0002', 'initestuploadbarang', 'T0001', 1000000),
+('B0003', 'initestuploadbarang', 'T0001', 1000000),
+('B0004', 'initestuploadbarang', 'T0001', 1000000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jenis`
+--
+
+CREATE TABLE `jenis` (
+  `id_jenis` varchar(12) NOT NULL,
+  `nama_jenis` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `jenis`
+--
+
+INSERT INTO `jenis` (`id_jenis`, `nama_jenis`) VALUES
+('T0001', 'Test');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
 
 CREATE TABLE `users` (
   `id_user` varchar(10) DEFAULT NULL,
@@ -30,18 +78,53 @@ CREATE TABLE `users` (
   `notelp_user` varchar(15) DEFAULT NULL,
   `tipe_user` varchar(30) DEFAULT NULL,
   `saldo_user` int(255) DEFAULT NULL,
-  `status_user` int(2) DEFAULT NULL,
-  PRIMARY KEY (`username_user`)
+  `status_user` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `users` */
+--
+-- Dumping data for table `users`
+--
 
-insert  into `users`(`id_user`,`nama_user`,`username_user`,`password_user`,`nik_user`,`alamat_user`,`notelp_user`,`tipe_user`,`saldo_user`,`status_user`) values 
-('U001','a','aa','a','123123','a','123123','user',20000,0),
-('A002','a','qwe','a123','123123','a','123123','admin',0,NULL),
-('C003','a','shawn','a123','123123','a','123123','user',0,NULL);
+INSERT INTO `users` (`id_user`, `nama_user`, `username_user`, `password_user`, `nik_user`, `alamat_user`, `notelp_user`, `tipe_user`, `saldo_user`, `status_user`) VALUES
+('U001', 'a', 'aa', 'a', '123123', 'a', '123123', 'user', 20000, 0),
+('A002', 'a', 'qwe', 'a123', '123123', 'a', '123123', 'admin', 0, NULL),
+('C003', 'a', 'shawn', 'a123', '123123', 'a', '123123', 'user', 0, NULL);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `barang`
+--
+ALTER TABLE `barang`
+  ADD PRIMARY KEY (`Id_barang`),
+  ADD KEY `id_jenis` (`id_jenis`);
+
+--
+-- Indexes for table `jenis`
+--
+ALTER TABLE `jenis`
+  ADD PRIMARY KEY (`id_jenis`),
+  ADD UNIQUE KEY `id_jenis` (`id_jenis`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`username_user`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `barang`
+--
+ALTER TABLE `barang`
+  ADD CONSTRAINT `id_jenis` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id_jenis`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

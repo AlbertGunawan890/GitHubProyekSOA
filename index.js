@@ -4,6 +4,7 @@ app.set("port", 3000);
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 const Sequelize = require('sequelize');
+const { Op, where } = require("sequelize");
 const { getDB } = require("./dbase");
 const joi = require('joi');
 const jwt = require("jsonwebtoken");
@@ -269,7 +270,7 @@ app.get("/api/cek_saldo/:userid", async (req, res) =>{
     }
 });
 app.get("/api/list_barang/:min/:max",async function (req,res) {
-    let data_barang=Barang.findAll({
+    let data_barang= await Barang.findAll({
         include:[{
             model:Jenis
         }],
@@ -289,3 +290,45 @@ app.get("/api/list_barang/:min/:max",async function (req,res) {
 app.post("/create_auction",async function (req,res) {
     
 })
+
+
+app.post("/api/admin/addBarang", async function (req, res){
+
+    let barang = null;
+    let {nama_barang, id_jenis, harga} = req.body
+        const schema = joi.object({
+            nama_barang: joi.string().min(10).required(),
+            id_jenis: joi.string().required(),
+            harga: joi.number().min(1000000).required()
+        })
+    try {
+        await schema.validateAsync(req.body)
+        let newIdPrefix = "B"
+        let keyword = `%${newIdPrefix}%`
+        let similarUID = await Barang.findAll(
+            {
+                where:{
+                    id_barang:{
+                        [Op.like]:keyword
+                    }
+                }
+            }
+        )
+        let newId = newIdPrefix + String(similarUID.length  +1).padStart(4,'0')
+        barang = await Barang.create({
+            id_barang: newId,
+            nama_barang: nama_barang,
+            id_jenis: id_jenis,
+            harga: harga
+        })
+    } catch (error) {
+        return res.status(400).send({
+            message: "Insert Failed",
+            error,
+          });
+    }
+     return res.status(201).send({
+        barang
+     })
+
+});
