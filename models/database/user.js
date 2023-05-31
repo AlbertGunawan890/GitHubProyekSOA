@@ -1,43 +1,60 @@
-const Sequelize  = require('sequelize');
 const {getDB}   = require("../../dbase");
-const sequelize = getDB(); 
-const user = sequelize.define('user', {
-    id_user: {
-        type: Sequelize.STRING,
-        primaryKey: true
+const sequelize = getDB();
+const {Model, DataTypes} = require('sequelize');
+
+class User extends Model {}
+User.init(
+    {
+        id_user: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false,
+            autoIncrement: false
+        },
+        nama_user: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        username_user: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }, 
+        password_user: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        nik_user: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        alamat_user: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }, 
+        notelp_user: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        tipe_user: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        saldo_user: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+        ,
+        status_user: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
     },
-    nama_user: {
-        type: Sequelize.STRING,
-    },
-    username_user: {
-        type: Sequelize.STRING,
-    }, 
-    password_user: {
-        type: Sequelize.STRING,
-    },
-    nik_user: {
-        type: Sequelize.INTEGER,
-    },
-    alamat_user: {
-        type: Sequelize.STRING,
-    }, 
-    notelp_user: {
-        type: Sequelize.INTEGER,
-    },
-    tipe_user: {
-        type: Sequelize.STRING,
-    },
-    saldo_user: {
-        type: Sequelize.STRING
+    {
+        sequelize,
+        timestamps: false,
+        modelName: "user",
+        tableName: "users"
     }
-    ,
-    status_user: {
-        type: Sequelize.STRING
-    }
-}, {
-    tableName: 'users',
-    timestamps: false
-});
-module.exports = (sequelize, Sequelize) => {
-    return user; 
-}
+)
+User.sync({alter:true})
+module.exports = User;

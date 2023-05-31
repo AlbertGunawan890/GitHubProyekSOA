@@ -12,9 +12,9 @@ const axios = require("axios");
 const dbase = require("./dbase");
 const Barang = require("./models/database/barang");
 const Jenis = require("./models/database/jenis");
+const user = require("./models/database/user");
 const sequelize = getDB();
 
-const user = require('./models/database/user')(sequelize, Sequelize);
 
 app.listen(app.get("port"), () => {
     console.log(`Server started at http://localhost:${app.get("port")}`);
