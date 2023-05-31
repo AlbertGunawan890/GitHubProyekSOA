@@ -50,25 +50,14 @@ app.post("/api/register", async (req, res) => {
                 double += 1;
             }
         }
-
-        if (double == 0) {
-            if (duser.length + 1 < 10) { id_user = "C00" + (duser.length + 1).toString(); }
-            else if (duser.length + 1 < 100) { id_user = "C0" + (duser.length + 1).toString(); }
-            else { id_user = "C" + (duser.length + 1).toString(); }
-
-            user.create({
-                id_user: id_user,
-                nama_user: req.body.nama,
-                username_user: req.body.username,
-                password_user: req.body.password,
-                nik_user: req.body.nik,
-                alamat_user: req.body.alamat,
-                notelp_user: req.body.notelp,
-                tipe_user: tipeUser,
-                saldo_user: saldo,
-                status_user: 1
-            }).then((data) => {
-                res.json({
+        if(tipeUser=="customer"||tipeUser=="Customer"||tipeUser=="CUSTOMER")
+        {
+            if (double == 0) {
+                if (duser.length + 1 < 10) { id_user = "C00" + (duser.length + 1).toString(); }
+                else if (duser.length + 1 < 100) { id_user = "C0" + (duser.length + 1).toString(); }
+                else { id_user = "C" + (duser.length + 1).toString(); }
+    
+                user.create({
                     id_user: id_user,
                     nama_user: req.body.nama,
                     username_user: req.body.username,
@@ -77,16 +66,70 @@ app.post("/api/register", async (req, res) => {
                     alamat_user: req.body.alamat,
                     notelp_user: req.body.notelp,
                     tipe_user: tipeUser,
-                    saldo_user: 0,
+                    saldo_user: saldo,
                     status_user: 1
+                }).then((data) => {
+                    res.json({
+                        id_user: id_user,
+                        nama_user: req.body.nama,
+                        username_user: req.body.username,
+                        password_user: req.body.password,
+                        nik_user: req.body.nik,
+                        alamat_user: req.body.alamat,
+                        notelp_user: req.body.notelp,
+                        tipe_user: tipeUser,
+                        saldo_user: 0,
+                        status_user: 1
+                    });
+                }).catch(err => console.error(err.message))
+            }
+            else {
+                return res.status(400).send({
+                    message: "username sudah terdaftar"
                 });
-            }).catch(err => console.error(err.message))
+            }
+        }else if(tipeUser=="Admin"||tipeUser=="admin"||tipeUser=="ADMIN")
+        {
+            if (double == 0) {
+                if (duser.length + 1 < 10) { id_user = "A00" + (duser.length + 1).toString(); }
+                else if (duser.length + 1 < 100) { id_user = "A0" + (duser.length + 1).toString(); }
+                else { id_user = "A" + (duser.length + 1).toString(); }
+    
+                user.create({
+                    id_user: id_user,
+                    nama_user: req.body.nama,
+                    username_user: req.body.username,
+                    password_user: req.body.password,
+                    nik_user: req.body.nik,
+                    alamat_user: req.body.alamat,
+                    notelp_user: req.body.notelp,
+                    tipe_user: tipeUser,
+                    saldo_user: saldo,
+                    status_user: 1
+                }).then((data) => {
+                    res.json({
+                        id_user: id_user,
+                        nama_user: req.body.nama,
+                        username_user: req.body.username,
+                        password_user: req.body.password,
+                        nik_user: req.body.nik,
+                        alamat_user: req.body.alamat,
+                        notelp_user: req.body.notelp,
+                        tipe_user: tipeUser,
+                        saldo_user: 0,
+                        status_user: 1
+                    });
+                }).catch(err => console.error(err.message))
+            }
+            else {
+                return res.status(400).send({
+                    message: "username sudah terdaftar"
+                });
+            }
+        }else{
+            return res.status(400).send({"message": "salah masuk tipe user"})
         }
-        else {
-            return res.status(400).send({
-                message: "username sudah terdaftar"
-            });
-        }
+        
     }).catch((err) => { });
 });
 
