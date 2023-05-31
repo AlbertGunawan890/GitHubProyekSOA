@@ -23,6 +23,5 @@ Jenis.init(
         tableName: "jenis"
     }
 )
-
 Jenis.sync({alter:true})
 module.exports = Jenis;

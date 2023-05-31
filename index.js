@@ -16,6 +16,8 @@ const user = require("./models/database/user");
 const Auction = require("./models/database/auction");
 const sequelize = getDB();
 
+Barang.belongsTo(Jenis,{foreignKey:"id_jenis"});
+
 
 app.listen(app.get("port"), () => {
     console.log(`Server started at http://localhost:${app.get("port")}`);
@@ -256,9 +258,9 @@ app.get("/api/list_barang/:min/:max",async function (req,res) {
                 [Op.between]: [parseInt(req.params.min),parseInt(req.params.max)]
             },
         },
-        // include:[{
-        //     model:Jenis,
-        // }],
+        include:[{
+            model:Jenis,
+        }],
         
     });
     if(data_barang.length==0){
@@ -377,5 +379,10 @@ app.post("/api/admin/addBarang", async function (req, res){
     return res.status(201).send({
         jenis
     })
+
+ });
+
+ app.post("/api/bid_auction", async function (req,res) {
+    let {id_barang,bid}=req.body;
 
  });

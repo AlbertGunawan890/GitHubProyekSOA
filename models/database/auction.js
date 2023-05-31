@@ -31,10 +31,10 @@ Auction.init(
         id_barang: {
             type: DataTypes.STRING,
             allowNull:false,
-            references: {
-                model: Barang,
-                key:'id_barang'
-            }
+            // references: {
+            //     model: Barang,
+            //     key:'id_barang'
+            // }
         },
         minimal_bid: {
             type: DataTypes.STRING,
