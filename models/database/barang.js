@@ -37,4 +37,5 @@ Barang.init(
     }
 )
 
+Barang.sync({alter:true})
 module.exports = Barang;

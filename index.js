@@ -13,6 +13,7 @@ const dbase = require("./dbase");
 const Barang = require("./models/database/barang");
 const Jenis = require("./models/database/jenis");
 const user = require("./models/database/user");
+const Auction = require("./models/database/auction");
 const sequelize = getDB();
 
 
@@ -288,7 +289,27 @@ app.get("/api/list_barang/:min/:max",async function (req,res) {
 });
 
 app.post("/create_auction",async function (req,res) {
-    
+    let {nama,tanggal,waktu_awal,waktu_akhir,barang_id,minimal}=req.body;
+    try {
+        userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+        if (userlogin.userlogin.tipe_user == "admin") {
+            let similarUID = await Auction.findAll();
+            let newId = newIdPrefix + String(similarUID.length  +1).padStart(4,'0')
+            Auction.create({
+                id_auction:newId,
+                nama:nama,
+                tanggal:tanggal,
+                waktu_awal:waktu_awal,
+                waktu_akhir:waktu_akhir,
+                id_barang:id_barang,
+                
+            })
+        }else{
+            res.status(400).send({ "message": "BUKAN ADMIN" });
+        }
+    }catch (error) {
+        res.status(400).send({ "message": "BUKAN ADMIN" });
+    }
 })
 
 
