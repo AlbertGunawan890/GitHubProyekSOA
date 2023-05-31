@@ -168,7 +168,7 @@ app.post("/api/login", async (req, res) => {
                 }, "proyekSOA", { expiresIn: '100m' })
                 var replymsg = {
                     "username": req.body.username,
-                    "status user" : unik[0].tipe_user,
+                    "status user": unik[0].tipe_user,
                     "token": usertoken
                 }
                 res.status(200).send(replymsg);
@@ -199,13 +199,12 @@ app.post("/api/banuser", async (req, res) => {
         if (!req.header("x-auth-token")) {
             return res.status(401).send({ "message": "UNATHORIZED" });
         }
-
         try {
             userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
             if (userlogin.userlogin.tipe_user == "admin") {
-                var [datauser] = await sequelize.query(`select * from users where id_user = '${req.body.userid}' `);
+                var datauser = await user.findAll({ where: { id_user: req.body.userid } });
                 if (datauser.length > 0) {
-                    await sequelize.query(`update users set status_user="0" where id_user = '${req.body.userid}' `);
+                    user.update({ status_user: 0 }, { where: { id_user: req.body.userid } });
                     return res.status(200).send({ "message": "sukses banned" });
                 } else {
                     return res.status(200).send({ "message": "user id tidak ditemukan" });
@@ -214,11 +213,11 @@ app.post("/api/banuser", async (req, res) => {
         } catch (error) {
             res.status(400).send({ "message": "BUKAN ADMIN" });
         }
+
     } catch (error) {
         return res.status(400).send(error.toString());
     }
 });
-
 
 app.post("/api/topup/:userid", async (req, res) => {
     try {
@@ -229,14 +228,14 @@ app.post("/api/topup/:userid", async (req, res) => {
         if (!req.header("x-auth-token")) {
             return res.status(401).send({ "message": "UNATHORIZED" });
         }
-
         try {
             userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
             if (userlogin.userlogin.tipe_user == "admin") {
-                var [datauser] = await sequelize.query(`select * from users where id_user = '${req.params.userid}' `);
+                var datauser = await user.findAll({ where: { id_user: req.params.userid } });
                 if (datauser.length > 0) {
-                    await sequelize.query(`update users set saldo_user= '${req.body.nominal}' where id_user = '${req.params.userid}' `);
-                    return res.status(200).send({ "message": "sukses menambahkan" });
+                    var saldobaruku = datauser[0].saldo_user + parseInt(req.body.nominal);
+                    user.update({ saldo_user: saldobaruku }, { where: { id_user: req.params.userid } });
+                    return res.status(200).send({ "message": "sukses topup" });
                 } else {
                     return res.status(200).send({ "message": "user id tidak ditemukan" });
                 }
@@ -244,6 +243,7 @@ app.post("/api/topup/:userid", async (req, res) => {
         } catch (error) {
             res.status(400).send({ "message": "BUKAN ADMIN" });
         }
+
     } catch (error) {
         return res.status(400).send(error.toString());
     }

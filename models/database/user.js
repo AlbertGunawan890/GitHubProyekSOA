@@ -30,6 +30,10 @@ const user = sequelize.define('user', {
     saldo_user: {
         type: Sequelize.STRING
     }
+    ,
+    status_user: {
+        type: Sequelize.STRING
+    }
 }, {
     tableName: 'users',
     timestamps: false
