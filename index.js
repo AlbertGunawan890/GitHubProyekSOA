@@ -16,7 +16,7 @@ const user = require("./models/database/user");
 const Auction = require("./models/database/auction");
 const sequelize = getDB();
 
-Barang.belongsTo(Jenis,{foreignKey:"id_jenis"});
+Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
 
 
 app.listen(app.get("port"), () => {
@@ -52,13 +52,12 @@ app.post("/api/register", async (req, res) => {
                 double += 1;
             }
         }
-        if(tipeUser=="customer"||tipeUser=="Customer"||tipeUser=="CUSTOMER")
-        {
+        if (tipeUser == "customer" || tipeUser == "Customer" || tipeUser == "CUSTOMER") {
             if (double == 0) {
                 if (duser.length + 1 < 10) { id_user = "C00" + (duser.length + 1).toString(); }
                 else if (duser.length + 1 < 100) { id_user = "C0" + (duser.length + 1).toString(); }
                 else { id_user = "C" + (duser.length + 1).toString(); }
-    
+
                 user.create({
                     id_user: id_user,
                     nama_user: req.body.nama,
@@ -90,13 +89,12 @@ app.post("/api/register", async (req, res) => {
                     message: "username sudah terdaftar"
                 });
             }
-        }else if(tipeUser=="Admin"||tipeUser=="admin"||tipeUser=="ADMIN")
-        {
+        } else if (tipeUser == "Admin" || tipeUser == "admin" || tipeUser == "ADMIN") {
             if (double == 0) {
                 if (duser.length + 1 < 10) { id_user = "A00" + (duser.length + 1).toString(); }
                 else if (duser.length + 1 < 100) { id_user = "A0" + (duser.length + 1).toString(); }
                 else { id_user = "A" + (duser.length + 1).toString(); }
-    
+
                 user.create({
                     id_user: id_user,
                     nama_user: req.body.nama,
@@ -128,10 +126,10 @@ app.post("/api/register", async (req, res) => {
                     message: "username sudah terdaftar"
                 });
             }
-        }else{
-            return res.status(400).send({"message": "salah masuk tipe user"})
+        } else {
+            return res.status(400).send({ "message": "salah masuk tipe user" })
         }
-        
+
     }).catch((err) => { });
 });
 
@@ -144,7 +142,7 @@ app.post("/api/login", async (req, res) => {
             password: joi.string().required(),
         }).validateAsync(req.body);
 
-        var unik = await user.findAll({where : {username_user : req.body.username}})
+        var unik = await user.findAll({ where: { username_user: req.body.username } })
         if (unik.length > 0) {
             var [unik] = await sequelize.query(`select * from users where username_user = "${req.body.username}" and password_user = "${req.body.password}"`);
             if (unik.length > 0) {
@@ -234,7 +232,7 @@ app.post("/api/topup/:userid", async (req, res) => {
     }
 });
 
-app.get("/api/cek_saldo/:userid", async (req, res) =>{
+app.get("/api/cek_saldo/:userid", async (req, res) => {
 
     try {
         userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
@@ -242,7 +240,7 @@ app.get("/api/cek_saldo/:userid", async (req, res) =>{
             var datauser = await user.findAll({ where: { id_user: req.params.userid } });
             if (datauser.length > 0) {
                 // console.log(datauser[0].saldo_user);
-                return res.status(200).send({"saldo user": datauser[0].saldo_user});
+                return res.status(200).send({ "saldo user": datauser[0].saldo_user });
             } else {
                 return res.status(200).send({ "message": "user id tidak ditemukan" });
             }
@@ -251,81 +249,108 @@ app.get("/api/cek_saldo/:userid", async (req, res) =>{
         res.status(400).send({ "message": "BUKAN ADMIN" });
     }
 });
-app.get("/api/list_barang/:min/:max",async function (req,res) {
-    let data_barang= await Barang.findAll({
-        where:{
+
+
+app.get("/api/search_action/:auctionid", async (req, res) => {
+
+    try {
+        var dataauction = await Auction.findAll({ where: { id_auction: req.params.auctionid } });
+        if (dataauction.length > 0) {
+            var replymsg = {
+                "ID Auction": dataauction[0].id_auction,
+                "Nama Auction": dataauction[0].nama,
+                "Tanggal Auction":  dataauction[0].tanggal,
+                "Waktu Awal " :  dataauction[0].waktu_awal,
+                "Waktu Akhir " :  dataauction[0].waktu_akhir,
+                "ID Barang" :  dataauction[0].id_barang,
+                "Minimmal Auction" :  dataauction[0].minimal_bid
+            }
+            res.status(200).send(replymsg);
+        } else {
+            return res.status(200).send({ "message": "user id tidak ditemukan" });
+        }
+
+    } catch (error) {
+        res.status(400).send({ "message": "BUKAN ADMIN" });
+    }
+});
+
+
+app.get("/api/list_barang/:min/:max", async function (req, res) {
+    let data_barang = await Barang.findAll({
+        where: {
             harga: {
-                [Op.between]: [parseInt(req.params.min),parseInt(req.params.max)]
+                [Op.between]: [parseInt(req.params.min), parseInt(req.params.max)]
             },
         },
-        include:[{
-            model:Jenis,
+        include: [{
+            model: Jenis,
         }],
-        
+
     });
-    if(data_barang.length==0){
-        return res.status(404).send({"message":"barang tidak ditemukan!"});
+    if (data_barang.length == 0) {
+        return res.status(404).send({ "message": "barang tidak ditemukan!" });
     }
     return res.status(200).send(data_barang);
 });
 
-app.post("/api/create_auction",async function (req,res) {
-    let {nama,tanggal,waktu_awal,waktu_akhir,id_barang,minimal_bid}=req.body;
+app.post("/api/create_auction", async function (req, res) {
+    let { nama, tanggal, waktu_awal, waktu_akhir, id_barang, minimal_bid } = req.body;
     try {
         let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
         if (userlogin.userlogin.tipe_user == "admin") {
             let data_auction = await Auction.findAll();
-            let newId = "A" + String(data_auction.length  +1).padStart(4,'0')
+            let newId = "A" + String(data_auction.length + 1).padStart(4, '0')
             Auction.create({
-                id_auction:newId,
-                nama:nama,
-                tanggal:tanggal,
-                waktu_awal:waktu_awal,
-                waktu_akhir:waktu_akhir,
-                id_barang:id_barang,
-                minimal_bid:minimal_bid
+                id_auction: newId,
+                nama: nama,
+                tanggal: tanggal,
+                waktu_awal: waktu_awal,
+                waktu_akhir: waktu_akhir,
+                id_barang: id_barang,
+                minimal_bid: minimal_bid
             });
             return res.status(200).send({
-                id_auction:newId,
-                nama:nama,
-                tanggal:tanggal,
-                waktu_awal:waktu_awal,
-                waktu_akhir:waktu_akhir,
-                id_barang:id_barang,
-                minimal_bid:minimal_bid
+                id_auction: newId,
+                nama: nama,
+                tanggal: tanggal,
+                waktu_awal: waktu_awal,
+                waktu_akhir: waktu_akhir,
+                id_barang: id_barang,
+                minimal_bid: minimal_bid
             })
-        }else{
+        } else {
             res.status(400).send({ "message": "BUKAN ADMIN" });
         }
-    }catch (error) {
+    } catch (error) {
         res.status(400).send({ "message": "BUKAN ADMIN" });
     }
 })
 
 
-app.post("/api/admin/addBarang", async function (req, res){
+app.post("/api/admin/addBarang", async function (req, res) {
 
     let barang = null;
-    let {nama_barang, id_jenis, harga} = req.body
-        const schema = joi.object({
-            nama_barang: joi.string().min(10).required(),
-            id_jenis: joi.string().required(),
-            harga: joi.number().min(1000000).required()
-        })
+    let { nama_barang, id_jenis, harga } = req.body
+    const schema = joi.object({
+        nama_barang: joi.string().min(10).required(),
+        id_jenis: joi.string().required(),
+        harga: joi.number().min(1000000).required()
+    })
     try {
         await schema.validateAsync(req.body)
         let newIdPrefix = "B"
         let keyword = `%${newIdPrefix}%`
         let similarUID = await Barang.findAll(
             {
-                where:{
-                    id_barang:{
-                        [Op.like]:keyword
+                where: {
+                    id_barang: {
+                        [Op.like]: keyword
                     }
                 }
             }
         )
-        let newId = newIdPrefix + String(similarUID.length  +1).padStart(4,'0')
+        let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
         barang = await Barang.create({
             id_barang: newId,
             nama_barang: nama_barang,
@@ -336,35 +361,35 @@ app.post("/api/admin/addBarang", async function (req, res){
         return res.status(400).send({
             message: "Insert Failed",
             error,
-          });
+        });
     }
-     return res.status(201).send({
+    return res.status(201).send({
         barang
-     })
+    })
 
 });
 
- app.post("/api/admin/addJenis", async function (req, res){
+app.post("/api/admin/addJenis", async function (req, res) {
 
     let jenis = null;
-    let {nama_jenis} = req.body
-    const schema = joi.object ({
+    let { nama_jenis } = req.body
+    const schema = joi.object({
         nama_jenis: joi.string().min(5).required()
     })
     try {
         await schema.validateAsync(req.body)
-        let newIdPrefix = nama_jenis.substring(0,1).toUpperCase()
+        let newIdPrefix = nama_jenis.substring(0, 1).toUpperCase()
         let keyword = `%${newIdPrefix}%`
         let similarUID = await Barang.findAll(
             {
-                where:{
-                    id_jenis:{
-                        [Op.like]:keyword
+                where: {
+                    id_jenis: {
+                        [Op.like]: keyword
                     }
                 }
             }
         )
-        let newId = newIdPrefix + String(similarUID.length  +1).padStart(4,'0')
+        let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
         jenis = await Jenis.create({
             id_jenis: newId,
             nama_jenis: nama_jenis
@@ -375,14 +400,14 @@ app.post("/api/admin/addBarang", async function (req, res){
             error,
         });
     }
-    
+
     return res.status(201).send({
         jenis
     })
 
- });
+});
 
- app.post("/api/bid_auction", async function (req,res) {
-    let {id_barang,bid}=req.body;
+app.post("/api/bid_auction", async function (req, res) {
+    let { id_barang, bid } = req.body;
 
- });
+});
