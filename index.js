@@ -9,6 +9,7 @@ const { getDB } = require("./dbase");
 const joi = require('joi');
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
+const bcrypt = require("bcrypt")
 const dbase = require("./dbase");
 const Barang = require("./models/database/barang");
 const Jenis = require("./models/database/jenis");
@@ -58,31 +59,41 @@ app.post("/api/register", async (req, res) => {
                 else if (duser.length + 1 < 100) { id_user = "C0" + (duser.length + 1).toString(); }
                 else { id_user = "C" + (duser.length + 1).toString(); }
 
-                user.create({
-                    id_user: id_user,
-                    nama_user: req.body.nama,
-                    username_user: req.body.username,
-                    password_user: req.body.password,
-                    nik_user: req.body.nik,
-                    alamat_user: req.body.alamat,
-                    notelp_user: req.body.notelp,
-                    tipe_user: tipeUser,
-                    saldo_user: saldo,
-                    status_user: 1
-                }).then((data) => {
-                    res.json({
-                        id_user: id_user,
-                        nama_user: req.body.nama,
-                        username_user: req.body.username,
-                        password_user: req.body.password,
-                        nik_user: req.body.nik,
-                        alamat_user: req.body.alamat,
-                        notelp_user: req.body.notelp,
-                        tipe_user: tipeUser,
-                        saldo_user: 0,
-                        status_user: 1
-                    });
-                }).catch(err => console.error(err.message))
+
+                bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
+                    .then(hash => {
+                        user.create({
+                            id_user: id_user,
+                            nama_user: req.body.nama,
+                            username_user: req.body.username,
+                            password_user: hash,
+                            nik_user: req.body.nik,
+                            alamat_user: req.body.alamat,
+                            notelp_user: req.body.notelp,
+                            tipe_user: tipeUser,
+                            saldo_user: saldo,
+                            status_user: 1
+                        }).then((data) => {
+                            res.json({
+                                id_user: id_user,
+                                nama_user: req.body.nama,
+                                username_user: req.body.username,
+                                password_user: hash,
+                                nik_user: req.body.nik,
+                                alamat_user: req.body.alamat,
+                                notelp_user: req.body.notelp,
+                                tipe_user: tipeUser,
+                                saldo_user: saldo,
+                                status_user: 1
+                            });
+                        })
+                        
+                            .catch((err) => { });
+                    })
+                    .catch(err => console.error(err.message))
+                // // // // // // // // // // // // // // // // // // // // // // // // 
+                // // // // // // // // // // // // // // // // // // // // // // // // 
+
             }
             else {
                 return res.status(400).send({
@@ -259,11 +270,11 @@ app.get("/api/search_action/:auctionid", async (req, res) => {
             var replymsg = {
                 "ID Auction": dataauction[0].id_auction,
                 "Nama Auction": dataauction[0].nama,
-                "Tanggal Auction":  dataauction[0].tanggal,
-                "Waktu Awal " :  dataauction[0].waktu_awal,
-                "Waktu Akhir " :  dataauction[0].waktu_akhir,
-                "ID Barang" :  dataauction[0].id_barang,
-                "Minimmal Auction" :  dataauction[0].minimal_bid
+                "Tanggal Auction": dataauction[0].tanggal,
+                "Waktu Awal ": dataauction[0].waktu_awal,
+                "Waktu Akhir ": dataauction[0].waktu_akhir,
+                "ID Barang": dataauction[0].id_barang,
+                "Minimmal Auction": dataauction[0].minimal_bid
             }
             res.status(200).send(replymsg);
         } else {
