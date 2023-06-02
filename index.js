@@ -62,6 +62,7 @@ app.post("/api/register", async (req, res) => {
 
                 bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
                     .then(hash => {
+
                         user.create({
                             id_user: id_user,
                             nama_user: req.body.nama,
@@ -87,12 +88,11 @@ app.post("/api/register", async (req, res) => {
                                 status_user: 1
                             });
                         })
-                        
+
                             .catch((err) => { });
                     })
                     .catch(err => console.error(err.message))
-                // // // // // // // // // // // // // // // // // // // // // // // // 
-                // // // // // // // // // // // // // // // // // // // // // // // // 
+
 
             }
             else {
@@ -106,31 +106,38 @@ app.post("/api/register", async (req, res) => {
                 else if (duser.length + 1 < 100) { id_user = "A0" + (duser.length + 1).toString(); }
                 else { id_user = "A" + (duser.length + 1).toString(); }
 
-                user.create({
-                    id_user: id_user,
-                    nama_user: req.body.nama,
-                    username_user: req.body.username,
-                    password_user: req.body.password,
-                    nik_user: req.body.nik,
-                    alamat_user: req.body.alamat,
-                    notelp_user: req.body.notelp,
-                    tipe_user: tipeUser,
-                    saldo_user: saldo,
-                    status_user: 1
-                }).then((data) => {
-                    res.json({
-                        id_user: id_user,
-                        nama_user: req.body.nama,
-                        username_user: req.body.username,
-                        password_user: req.body.password,
-                        nik_user: req.body.nik,
-                        alamat_user: req.body.alamat,
-                        notelp_user: req.body.notelp,
-                        tipe_user: tipeUser,
-                        saldo_user: 0,
-                        status_user: 1
-                    });
-                }).catch(err => console.error(err.message))
+                bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
+                    .then(hash => {
+
+                        user.create({
+                            id_user: id_user,
+                            nama_user: req.body.nama,
+                            username_user: req.body.username,
+                            password_user: hash,
+                            nik_user: req.body.nik,
+                            alamat_user: req.body.alamat,
+                            notelp_user: req.body.notelp,
+                            tipe_user: tipeUser,
+                            saldo_user: saldo,
+                            status_user: 1
+                        }).then((data) => {
+                            res.json({
+                                id_user: id_user,
+                                nama_user: req.body.nama,
+                                username_user: req.body.username,
+                                password_user: hash,
+                                nik_user: req.body.nik,
+                                alamat_user: req.body.alamat,
+                                notelp_user: req.body.notelp,
+                                tipe_user: tipeUser,
+                                saldo_user: saldo,
+                                status_user: 1
+                            });
+                        })
+
+                            .catch((err) => { });
+                    })
+                    .catch(err => console.error(err.message))
             }
             else {
                 return res.status(400).send({
@@ -144,7 +151,6 @@ app.post("/api/register", async (req, res) => {
     }).catch((err) => { });
 });
 
-
 app.post("/api/login", async (req, res) => {
 
     try {
@@ -154,24 +160,26 @@ app.post("/api/login", async (req, res) => {
         }).validateAsync(req.body);
 
         var unik = await user.findAll({ where: { username_user: req.body.username } })
-        if (unik.length > 0) {
-            var [unik] = await sequelize.query(`select * from users where username_user = "${req.body.username}" and password_user = "${req.body.password}"`);
-            if (unik.length > 0) {
-                var usertoken = jwt.sign({
-                    "userlogin": unik[0]
-                }, "proyekSOA", { expiresIn: '100m' })
-                var replymsg = {
-                    "username": req.body.username,
-                    "status user": unik[0].tipe_user,
-                    "token": usertoken
+        if (unik.length > 0) 
+        {
+            bcrypt.compare(req.body.password, unik[0].password_user, function (err, result) {
+                if (unik.length > 0) {
+                    var usertoken = jwt.sign({
+                        "userlogin": unik[0]
+                    }, "proyekSOA", { expiresIn: '100m' })
+                    var replymsg = {
+                        "username": req.body.username,
+                        "status user": unik[0].tipe_user,
+                        "token": usertoken
+                    }
+                    res.status(200).send(replymsg);
                 }
-                res.status(200).send(replymsg);
-            }
-            else {
-                res.status(200).json({
-                    message: "Password salah"
-                });
-            }
+                else {
+                    res.status(200).json({
+                        message: "Password salah"
+                    });
+                }
+            });
         }
         else {
             res.status(200).json({
