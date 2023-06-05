@@ -15,6 +15,8 @@ const Barang = require("./models/database/barang");
 const Jenis = require("./models/database/jenis");
 const user = require("./models/database/user");
 const Auction = require("./models/database/auction");
+const log_auction = require("./models/database/log_auction");
+const User = require("./models/database/user");
 const sequelize = getDB();
 
 Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
@@ -424,6 +426,44 @@ app.post("/api/admin/addJenis", async function (req, res) {
 });
 
 app.post("/api/bid_auction", async function (req, res) {
-    let { id_barang, bid } = req.body;
+    let { id_auction, bid } = req.body;
+    try {
+        let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+        if (userlogin.userlogin.tipe_user == "customer") {
+            let data_log_auction = await log_auction.findAll();
+            if(data_log_auction.length>0){
+                if(parseInt(data_log_auction[data_log_auction.length-1].bid)>=parseInt(bid) ){
+                    return res.status(400).send({"message":"Bid sekarang sudah berada di "+ data_log_auction[data_log_auction.length-1].bid})
+                }
+            }
+            let data_auction = await Auction.findAll({
+                where:{
+                    id_auction:{
+                        [Op.eq]:id_auction
+                    }
+                }
+            });
+            if(parseInt(bid)<parseInt(data_auction[0].minimal_bid)){
+                return res.status(400).send({"message":"Bid kurang dari minimal"});
+            }
+            
+            let newId = "L" + String(data_log_auction.length + 1).padStart(4, '0');
+            var d = new Date(); 
+            let jam=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
 
+            let log=await log_auction.create({
+                "id_log":newId,
+                "id_auction":id_auction,
+                "id_user":userlogin.userlogin.id_user,
+                "bid":bid,
+                "waktu":jam
+            });
+            return res.status(201).send(log);
+        }
+    }catch (error) {
+        return res.status(400).send({
+            message: "Bid Gagal",
+            error,
+        });
+    }
 });
