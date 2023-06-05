@@ -30,7 +30,7 @@ CREATE TABLE `auction` (
   `minimal_bid` varchar(255) NOT NULL,
   PRIMARY KEY (`id_auction`),
   KEY `id_barang` (`id_barang`),
-  CONSTRAINT `auction_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`)
+  CONSTRAINT `auction_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `auction` */
@@ -49,7 +49,7 @@ CREATE TABLE `barang` (
   `harga` varchar(255) NOT NULL,
   PRIMARY KEY (`id_barang`),
   KEY `id_jenis` (`id_jenis`),
-  CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id_jenis`)
+  CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id_jenis`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `barang` */
@@ -72,6 +72,21 @@ CREATE TABLE `jenis` (
 insert  into `jenis`(`id_jenis`,`nama_jenis`) values 
 ('M0001','Mobil');
 
+/*Table structure for table `log_auction` */
+
+DROP TABLE IF EXISTS `log_auction`;
+
+CREATE TABLE `log_auction` (
+  `id_log` varchar(255) NOT NULL,
+  `id_auction` varchar(255) NOT NULL,
+  `id_user` varchar(255) NOT NULL,
+  `bid` varchar(255) NOT NULL,
+  `waktu` time NOT NULL,
+  PRIMARY KEY (`id_log`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `log_auction` */
+
 /*Table structure for table `users` */
 
 DROP TABLE IF EXISTS `users`;
@@ -93,8 +108,7 @@ CREATE TABLE `users` (
 /*Data for the table `users` */
 
 insert  into `users`(`id_user`,`nama_user`,`username_user`,`password_user`,`nik_user`,`alamat_user`,`notelp_user`,`tipe_user`,`saldo_user`,`status_user`) values 
-('A001','a','qwe','a123',123123,'a',123123,'admin','0','1'),
-('A002','a','qwe','a123',123123,'a',123123,'admin','0','1');
+('A001','a','qwe','a123',123123,'a',123123,'customer','0','1');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -362,6 +362,72 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "nge bid auction",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDEiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InF3ZSIsInBhc3N3b3JkX3VzZXIiOiJhMTIzIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiY3VzdG9tZXIiLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODU5NDQ0OTEsImV4cCI6MTY4NTk1MDQ5MX0.HLOleMOVzZL0R3s69kZ6XKU3UbHnS1ij1zZHk4Y9Y-o",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id_auction",
+							"value": "A0001",
+							"type": "text"
+						},
+						{
+							"key": "bid",
+							"value": "1000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/bid_auction",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"bid_auction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list auction by jenis",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/list_barang/:jenis",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"list_barang",
+						":jenis"
+					],
+					"variable": [
+						{
+							"key": "jenis",
+							"value": "m"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

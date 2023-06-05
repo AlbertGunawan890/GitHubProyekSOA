@@ -20,6 +20,7 @@ const User = require("./models/database/user");
 const sequelize = getDB();
 
 Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
+Auction.belongsTo(Barang, { foreignKey: "id_barang" });
 
 
 app.listen(app.get("port"), () => {
@@ -295,21 +296,52 @@ app.get("/api/search_action/:auctionid", async (req, res) => {
 
 
 app.get("/api/list_barang/:min/:max", async function (req, res) {
-    let data_barang = await Barang.findAll({
-        where: {
-            harga: {
-                [Op.between]: [parseInt(req.params.min), parseInt(req.params.max)]
+    let data=await Auction.findAll({
+        include:{
+            model:Barang,
+            where:{
+                harga: {
+                    [Op.between]: [parseInt(req.params.min), parseInt(req.params.max)]
+                }
             },
         },
-        include: [{
-            model: Jenis,
-        }],
-
     });
-    if (data_barang.length == 0) {
+    // console.log(data);
+    // let data_barang = await Barang.findAll({
+    //     where: {
+    //         harga: {
+    //             [Op.between]: [parseInt(req.params.min), parseInt(req.params.max)]
+    //         },
+    //     },
+    //     include: [{
+    //         model: Jenis,
+    //     }],
+
+    // });
+    if (data.length == 0) {
         return res.status(404).send({ "message": "barang tidak ditemukan!" });
     }
-    return res.status(200).send(data_barang);
+    return res.status(200).send(data);
+});
+
+
+app.get("/api/list_barang/:jenis", async function (req, res) {
+    let {jenis}=req.params;
+    let keyword = `%${jenis}%`
+    let data=await Auction.findAll({
+        include:{
+            model:Barang,
+            where:{
+                id_jenis: {
+                    [Op.like]: keyword
+                }
+            },
+        },
+    });
+    if (data.length == 0) {
+        return res.status(404).send({ "message": "barang tidak ditemukan!" });
+    }
+    return res.status(200).send(data);
 });
 
 app.post("/api/create_auction", async function (req, res) {
