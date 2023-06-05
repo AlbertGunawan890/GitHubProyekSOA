@@ -92,8 +92,6 @@ app.post("/api/register", async (req, res) => {
                             .catch((err) => { });
                     })
                     .catch(err => console.error(err.message))
-
-
             }
             else {
                 return res.status(400).send({
@@ -108,7 +106,6 @@ app.post("/api/register", async (req, res) => {
 
                 bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
                     .then(hash => {
-
                         user.create({
                             id_user: id_user,
                             nama_user: req.body.nama,
