@@ -466,11 +466,12 @@ app.post("/api/create_auction", async function (req, res) {
 app.post("/api/admin/addBarang", async function (req, res) {
 
     let barang = null;
-    let { nama_barang, id_jenis, harga } = req.body
+    let { nama_barang, id_jenis, harga, detail_barang } = req.body
     const schema = joi.object({
         nama_barang: joi.string().min(10).required(),
         id_jenis: joi.string().required(),
-        harga: joi.number().min(1000000).required()
+        harga: joi.number().min(1000000).required(),
+        detail_barang: joi.string().required()
     })
     try {
         await schema.validateAsync(req.body)
@@ -490,7 +491,8 @@ app.post("/api/admin/addBarang", async function (req, res) {
             id_barang: newId,
             nama_barang: nama_barang,
             id_jenis: id_jenis,
-            harga: harga
+            harga: harga,
+            detail_barang: detail_barang
         })
     } catch (error) {
         return res.status(400).send({

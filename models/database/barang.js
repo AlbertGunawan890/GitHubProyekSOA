@@ -27,6 +27,10 @@ Barang.init(
         harga: {
             type: DataTypes.STRING,
             allowNull:false
+        },
+        detai_barang : {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     },
     {
