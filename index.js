@@ -213,8 +213,8 @@ app.post("/api/register", async (req, res) => {
                           ],
                           "Subject": "Confirmation Register",
                           "TextPart": "Click link below to activate your account",
-                          "HTMLPart": "<h3>This is "+req.body.username+" as "+tipeUser +"?</h3><br />",
-                          "CustomID": "AppGettingStartedTest"
+                          "HTMLPart": "<center><h1>This is "+req.body.username+" as "+tipeUser+"</h1></center><br><center>click button below for activated </center><br><center><button >CLICK HERE</button> </center>",
+                          "CustomID": String
                         }
                       ]
                     })
