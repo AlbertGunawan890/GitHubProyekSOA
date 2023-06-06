@@ -102,13 +102,11 @@ CREATE TABLE `users` (
   `tipe_user` varchar(255) NOT NULL,
   `saldo_user` varchar(255) NOT NULL,
   `status_user` varchar(255) NOT NULL,
+  `email_user` varchar(255) NOT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `users` */
-
-insert  into `users`(`id_user`,`nama_user`,`username_user`,`password_user`,`nik_user`,`alamat_user`,`notelp_user`,`tipe_user`,`saldo_user`,`status_user`) values 
-('A001','a','qwe','a123',123123,'a',123123,'customer','0','1');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
