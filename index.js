@@ -19,7 +19,7 @@ const log_auction = require("./models/database/log_auction");
 const User = require("./models/database/user");
 const sequelize = getDB();
 
-Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
+Barang.belongsTo(Jenis, { as:"Jenis", foreignKey: "id_jenis" });
 
 
 app.listen(app.get("port"), () => {
@@ -303,11 +303,15 @@ app.get("/api/list_barang/:min/:max", async function (req, res) {
         },
         include: [{
             model: Jenis,
+            attributes: ['nama_jenis'],
+            required: false,
+            as: "Jenis"
         }],
+
 
     });
     if (data_barang.length == 0) {
-        return res.status(404).send({ "message": "barang tidak ditemukan!" });
+        return res.status(404).send({ "message": "Barang tidak ditemukan!" });
     }
     return res.status(200).send(data_barang);
 });
@@ -384,7 +388,58 @@ app.post("/api/admin/addBarang", async function (req, res) {
     return res.status(201).send({
         barang
     })
+});
 
+app.get("/api/nama_barang/:nama", async function (req, res) {
+    let nama = req.params.nama;
+    let barang = await Barang.findAll({
+        where: {
+            nama_barang: {
+                [Op.eq]: nama.toString()
+            }
+        },
+        attributes:["id_barang","nama_barang","harga"],
+        include: [{
+            model: Jenis,
+            attributes: ['nama_jenis'],
+            required: false,
+            as:"Jenis"
+        }],
+    });
+    if (barang.length == 0) {
+        return res.status(400).send({
+            message: "Barang tidak ditemukkan!"
+        });
+    } 
+    return res.status(201).send({
+        barang
+    })
+});
+
+app.get("/api/id_barang/:id", async function (req, res) {
+    let id = req.params.id;
+    let barang = await Barang.findAll({
+        where: {
+            id_barang: {
+                [Op.eq]: id.toString()
+            }
+        },
+        attributes:["id_barang","nama_barang","harga"],
+        include: [{
+            model: Jenis,
+            attributes: ['nama_jenis'],
+            required: false,
+            as:"Jenis"
+        }],
+    });
+    if (barang.length == 0) {
+        return res.status(400).send({
+            message: "Barang tidak ditemukkan!"
+        });
+    } 
+    return res.status(201).send({
+        barang
+    })
 });
 
 app.post("/api/admin/addJenis", async function (req, res) {
