@@ -203,7 +203,7 @@ app.post("/api/register", async (req, res) => {
                         {
                           "From": {
                             "Email": "albert.g20@mhs.istts.ac.id",
-                            "Name": "Library API"
+                            "Name": "Proyek SOA"
                           },
                           "To": [
                             {
@@ -251,7 +251,7 @@ app.post("/api/login", async (req, res) => {
                 if (unik.length > 0) {
                     var usertoken = jwt.sign({
                         "userlogin": unik[0]
-                    }, "proyekSOA", { expiresIn: '100m' })
+                    }, "proyekSOA", { expiresIn: '300m' })
                     var replymsg = {
                         "username": req.body.username,
                         "status user": unik[0].tipe_user,
