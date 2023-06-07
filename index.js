@@ -10,6 +10,7 @@ const joi = require('joi');
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 const bcrypt = require("bcrypt")
+const Mailjet = require('node-mailjet');
 const dbase = require("./dbase");
 const Barang = require("./models/database/barang");
 const Jenis = require("./models/database/jenis");
@@ -19,7 +20,12 @@ const log_auction = require("./models/database/log_auction");
 const User = require("./models/database/user");
 const sequelize = getDB();
 
-Barang.belongsTo(Jenis, { as:"Jenis", foreignKey: "id_jenis" });
+// const mailjet = Mailjet.apiConnect(
+//     process.env.MJ_APIKEY_PUBLIC,
+//     process.env.MJ_APIKEY_PRIVATE,
+// );
+Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
+Auction.belongsTo(Barang, { foreignKey: "id_barang" });
 
 
 app.listen(app.get("port"), () => {
@@ -64,11 +70,11 @@ app.post("/api/register", async (req, res) => {
 
                 bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
                     .then(hash => {
-
                         user.create({
                             id_user: id_user,
                             nama_user: req.body.nama,
                             username_user: req.body.username,
+                            email_user: req.body.email,
                             password_user: hash,
                             nik_user: req.body.nik,
                             alamat_user: req.body.alamat,
@@ -81,6 +87,7 @@ app.post("/api/register", async (req, res) => {
                                 id_user: id_user,
                                 nama_user: req.body.nama,
                                 username_user: req.body.username,
+                                email_user: req.body.email,
                                 password_user: hash,
                                 nik_user: req.body.nik,
                                 alamat_user: req.body.alamat,
@@ -94,6 +101,46 @@ app.post("/api/register", async (req, res) => {
                             .catch((err) => { });
                     })
                     .catch(err => console.error(err.message))
+                const Mailjet = require('node-mailjet')
+
+                const mailjet = Mailjet.apiConnect(
+                    "b82c023d81135edb416f540324336f01",
+                    "6af6ae99683e4e5adffaa00d35707597",
+                    {
+                        config: {},
+                        options: {}
+                    }
+                )
+
+                const request = mailjet
+                    .post("send", { 'version': 'v3.1' })
+                    .request({
+                        "Messages": [
+                            {
+                                "From": {
+                                    "Email": "albert.g20@mhs.istts.ac.id",
+                                    "Name": "Library API"
+                                },
+                                "To": [
+                                    {
+                                        "Email": "" + req.body.email + "",
+                                        "Name": "'" + req.body.nama + "'"
+                                    }
+                                ],
+                                "Subject": "Confirmation Register",
+                                "TextPart": "Click link below to activate your account",
+                                "HTMLPart": "<h3>This is " + req.body.username + " as " + tipeUser + "?</h3><br />",
+                                "CustomID": "AppGettingStartedTest"
+                            }
+                        ]
+                    })
+                request
+                    .then((result) => {
+                        console.log(result.body)
+                    })
+                    .catch((err) => {
+                        console.log(err.statusCode)
+                    })
             }
             else {
                 return res.status(400).send({
@@ -112,6 +159,7 @@ app.post("/api/register", async (req, res) => {
                             id_user: id_user,
                             nama_user: req.body.nama,
                             username_user: req.body.username,
+                            email_user: req.body.email,
                             password_user: hash,
                             nik_user: req.body.nik,
                             alamat_user: req.body.alamat,
@@ -124,6 +172,7 @@ app.post("/api/register", async (req, res) => {
                                 id_user: id_user,
                                 nama_user: req.body.nama,
                                 username_user: req.body.username,
+                                email_user: req.body.email,
                                 password_user: hash,
                                 nik_user: req.body.nik,
                                 alamat_user: req.body.alamat,
@@ -133,10 +182,49 @@ app.post("/api/register", async (req, res) => {
                                 status_user: 1
                             });
                         })
-
                             .catch((err) => { });
                     })
                     .catch(err => console.error(err.message))
+                const Mailjet = require('node-mailjet')
+
+                const mailjet = Mailjet.apiConnect(
+                    "b82c023d81135edb416f540324336f01",
+                    "6af6ae99683e4e5adffaa00d35707597",
+                    {
+                        config: {},
+                        options: {}
+                    }
+                )
+
+                const request = mailjet
+                    .post("send", { 'version': 'v3.1' })
+                    .request({
+                        "Messages": [
+                            {
+                                "From": {
+                                    "Email": "albert.g20@mhs.istts.ac.id",
+                                    "Name": "Proyek SOA"
+                                },
+                                "To": [
+                                    {
+                                        "Email": "" + req.body.email + "",
+                                        "Name": "'" + req.body.nama + "'"
+                                    }
+                                ],
+                                "Subject": "Confirmation Register",
+                                "TextPart": "Click link below to activate your account",
+                                "HTMLPart": "<center><h1>This is " + req.body.username + " as " + tipeUser + "</h1></center><br><center>click button below for activated </center><br><center><button >CLICK HERE</button> </center>",
+                                "CustomID": String
+                            }
+                        ]
+                    })
+                request
+                    .then((result) => {
+                        console.log(result.body)
+                    })
+                    .catch((err) => {
+                        console.log(err.statusCode)
+                    })
             }
             else {
                 return res.status(400).send({
@@ -146,7 +234,6 @@ app.post("/api/register", async (req, res) => {
         } else {
             return res.status(400).send({ "message": "salah masuk tipe user" })
         }
-
     }).catch((err) => { });
 });
 
@@ -159,13 +246,12 @@ app.post("/api/login", async (req, res) => {
         }).validateAsync(req.body);
 
         var unik = await user.findAll({ where: { username_user: req.body.username } })
-        if (unik.length > 0) 
-        {
+        if (unik.length > 0) {
             bcrypt.compare(req.body.password, unik[0].password_user, function (err, result) {
                 if (unik.length > 0) {
                     var usertoken = jwt.sign({
                         "userlogin": unik[0]
-                    }, "proyekSOA", { expiresIn: '100m' })
+                    }, "proyekSOA", { expiresIn: '300m' })
                     var replymsg = {
                         "username": req.body.username,
                         "status user": unik[0].tipe_user,
@@ -268,6 +354,21 @@ app.get("/api/cek_saldo/:userid", async (req, res) => {
     }
 });
 
+app.get("/api/list-winning", async function (req, res) {
+    let date_ob = new Date();
+    var jamnow = date_ob.getHours() + ":" + date_ob.getMinutes() + ":" + date_ob.getSeconds();
+
+    var jamnya = await Auction.findAll({
+        where: {
+            waktu_akhir: 
+            {
+                [Op.lte]: jamnow,
+            }
+        }
+    })
+
+    res.status(200).json(jamnya);
+});
 
 app.get("/api/search_action/:auctionid", async (req, res) => {
 
@@ -295,10 +396,13 @@ app.get("/api/search_action/:auctionid", async (req, res) => {
 
 
 app.get("/api/list_barang/:min/:max", async function (req, res) {
-    let data_barang = await Barang.findAll({
-        where: {
-            harga: {
-                [Op.between]: [parseInt(req.params.min), parseInt(req.params.max)]
+    let data = await Auction.findAll({
+        include: {
+            model: Barang,
+            where: {
+                harga: {
+                    [Op.between]: [parseInt(req.params.min), parseInt(req.params.max)]
+                }
             },
         },
         include: [{
@@ -313,7 +417,27 @@ app.get("/api/list_barang/:min/:max", async function (req, res) {
     if (data_barang.length == 0) {
         return res.status(404).send({ "message": "Barang tidak ditemukan!" });
     }
-    return res.status(200).send(data_barang);
+    return res.status(200).send(data);
+});
+
+
+app.get("/api/list_barang/:jenis", async function (req, res) {
+    let { jenis } = req.params;
+    let keyword = `%${jenis}%`
+    let data = await Auction.findAll({
+        include: {
+            model: Barang,
+            where: {
+                id_jenis: {
+                    [Op.like]: keyword
+                }
+            },
+        },
+    });
+    if (data.length == 0) {
+        return res.status(404).send({ "message": "barang tidak ditemukan!" });
+    }
+    return res.status(200).send(data);
 });
 
 app.post("/api/create_auction", async function (req, res) {
@@ -353,11 +477,12 @@ app.post("/api/create_auction", async function (req, res) {
 app.post("/api/admin/addBarang", async function (req, res) {
 
     let barang = null;
-    let { nama_barang, id_jenis, harga } = req.body
+    let { nama_barang, id_jenis, harga, detail_barang } = req.body
     const schema = joi.object({
         nama_barang: joi.string().min(10).required(),
         id_jenis: joi.string().required(),
-        harga: joi.number().min(1000000).required()
+        harga: joi.number().min(1000000).required(),
+        detail_barang: joi.string().required()
     })
     try {
         await schema.validateAsync(req.body)
@@ -377,7 +502,8 @@ app.post("/api/admin/addBarang", async function (req, res) {
             id_barang: newId,
             nama_barang: nama_barang,
             id_jenis: id_jenis,
-            harga: harga
+            harga: harga,
+            detail_barang: detail_barang
         })
     } catch (error) {
         return res.status(400).send({
@@ -486,36 +612,36 @@ app.post("/api/bid_auction", async function (req, res) {
         let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
         if (userlogin.userlogin.tipe_user == "customer") {
             let data_log_auction = await log_auction.findAll();
-            if(data_log_auction.length>0){
-                if(parseInt(data_log_auction[data_log_auction.length-1].bid)>=parseInt(bid) ){
-                    return res.status(400).send({"message":"Bid sekarang sudah berada di "+ data_log_auction[data_log_auction.length-1].bid})
+            if (data_log_auction.length > 0) {
+                if (parseInt(data_log_auction[data_log_auction.length - 1].bid) >= parseInt(bid)) {
+                    return res.status(400).send({ "message": "Bid sekarang sudah berada di " + data_log_auction[data_log_auction.length - 1].bid })
                 }
             }
             let data_auction = await Auction.findAll({
-                where:{
-                    id_auction:{
-                        [Op.eq]:id_auction
+                where: {
+                    id_auction: {
+                        [Op.eq]: id_auction
                     }
                 }
             });
-            if(parseInt(bid)<parseInt(data_auction[0].minimal_bid)){
-                return res.status(400).send({"message":"Bid kurang dari minimal"});
+            if (parseInt(bid) < parseInt(data_auction[0].minimal_bid)) {
+                return res.status(400).send({ "message": "Bid kurang dari minimal" });
             }
-            
-            let newId = "L" + String(data_log_auction.length + 1).padStart(4, '0');
-            var d = new Date(); 
-            let jam=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
 
-            let log=await log_auction.create({
-                "id_log":newId,
-                "id_auction":id_auction,
-                "id_user":userlogin.userlogin.id_user,
-                "bid":bid,
-                "waktu":jam
+            let newId = "L" + String(data_log_auction.length + 1).padStart(4, '0');
+            var d = new Date();
+            let jam = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+            let log = await log_auction.create({
+                "id_log": newId,
+                "id_auction": id_auction,
+                "id_user": userlogin.userlogin.id_user,
+                "bid": bid,
+                "waktu": jam
             });
             return res.status(201).send(log);
         }
-    }catch (error) {
+    } catch (error) {
         return res.status(400).send({
             message: "Bid Gagal",
             error,
