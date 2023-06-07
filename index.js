@@ -354,6 +354,14 @@ app.get("/api/cek_saldo/:userid", async (req, res) => {
     }
 });
 
+app.get("/api/list-winning", async function (req, res) {
+    let date_ob = new Date();
+    var jamnow = date_ob.getHours() + ":" + date_ob.getMinutes() + ":" + date_ob.getSeconds(); 
+
+    var unik = await Auction.findAll({where: { waktu_akhir, lte, jamnow } })
+
+    res.status(200).json(unik); 
+});
 
 app.get("/api/search_action/:auctionid", async (req, res) => {
 
