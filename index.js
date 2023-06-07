@@ -101,46 +101,46 @@ app.post("/api/register", async (req, res) => {
                             .catch((err) => { });
                     })
                     .catch(err => console.error(err.message))
-                    const Mailjet = require('node-mailjet')
-    
-                    const mailjet = Mailjet.apiConnect(
-                        "b82c023d81135edb416f540324336f01",
-                        "6af6ae99683e4e5adffaa00d35707597",
-                        {
-                            config:{},
-                            options:{}
-                        }
-                    )
-                
-                    const request = mailjet
-                    .post("send", {'version': 'v3.1'})
+                const Mailjet = require('node-mailjet')
+
+                const mailjet = Mailjet.apiConnect(
+                    "b82c023d81135edb416f540324336f01",
+                    "6af6ae99683e4e5adffaa00d35707597",
+                    {
+                        config: {},
+                        options: {}
+                    }
+                )
+
+                const request = mailjet
+                    .post("send", { 'version': 'v3.1' })
                     .request({
-                      "Messages":[
-                        {
-                          "From": {
-                            "Email": "albert.g20@mhs.istts.ac.id",
-                            "Name": "Library API"
-                          },
-                          "To": [
+                        "Messages": [
                             {
-                              "Email": ""+req.body.email+"",
-                              "Name": "'"+req.body.nama+"'"
+                                "From": {
+                                    "Email": "albert.g20@mhs.istts.ac.id",
+                                    "Name": "Library API"
+                                },
+                                "To": [
+                                    {
+                                        "Email": "" + req.body.email + "",
+                                        "Name": "'" + req.body.nama + "'"
+                                    }
+                                ],
+                                "Subject": "Confirmation Register",
+                                "TextPart": "Click link below to activate your account",
+                                "HTMLPart": "<h3>This is " + req.body.username + " as " + tipeUser + "?</h3><br />",
+                                "CustomID": "AppGettingStartedTest"
                             }
-                          ],
-                          "Subject": "Confirmation Register",
-                          "TextPart": "Click link below to activate your account",
-                          "HTMLPart": "<h3>This is "+req.body.username+" as "+tipeUser +"?</h3><br />",
-                          "CustomID": "AppGettingStartedTest"
-                        }
-                      ]
+                        ]
                     })
-                    request
-                      .then((result) => {
+                request
+                    .then((result) => {
                         console.log(result.body)
-                      })
-                      .catch((err) => {
+                    })
+                    .catch((err) => {
                         console.log(err.statusCode)
-                      })
+                    })
             }
             else {
                 return res.status(400).send({
@@ -185,46 +185,46 @@ app.post("/api/register", async (req, res) => {
                             .catch((err) => { });
                     })
                     .catch(err => console.error(err.message))
-                    const Mailjet = require('node-mailjet')
-    
-                    const mailjet = Mailjet.apiConnect(
-                        "b82c023d81135edb416f540324336f01",
-                        "6af6ae99683e4e5adffaa00d35707597",
-                        {
-                            config:{},
-                            options:{}
-                        }
-                    )
-                
-                    const request = mailjet
-                    .post("send", {'version': 'v3.1'})
+                const Mailjet = require('node-mailjet')
+
+                const mailjet = Mailjet.apiConnect(
+                    "b82c023d81135edb416f540324336f01",
+                    "6af6ae99683e4e5adffaa00d35707597",
+                    {
+                        config: {},
+                        options: {}
+                    }
+                )
+
+                const request = mailjet
+                    .post("send", { 'version': 'v3.1' })
                     .request({
-                      "Messages":[
-                        {
-                          "From": {
-                            "Email": "albert.g20@mhs.istts.ac.id",
-                            "Name": "Proyek SOA"
-                          },
-                          "To": [
+                        "Messages": [
                             {
-                              "Email": ""+req.body.email+"",
-                              "Name": "'"+req.body.nama+"'"
+                                "From": {
+                                    "Email": "albert.g20@mhs.istts.ac.id",
+                                    "Name": "Proyek SOA"
+                                },
+                                "To": [
+                                    {
+                                        "Email": "" + req.body.email + "",
+                                        "Name": "'" + req.body.nama + "'"
+                                    }
+                                ],
+                                "Subject": "Confirmation Register",
+                                "TextPart": "Click link below to activate your account",
+                                "HTMLPart": "<center><h1>This is " + req.body.username + " as " + tipeUser + "</h1></center><br><center>click button below for activated </center><br><center><button >CLICK HERE</button> </center>",
+                                "CustomID": String
                             }
-                          ],
-                          "Subject": "Confirmation Register",
-                          "TextPart": "Click link below to activate your account",
-                          "HTMLPart": "<center><h1>This is "+req.body.username+" as "+tipeUser+"</h1></center><br><center>click button below for activated </center><br><center><button >CLICK HERE</button> </center>",
-                          "CustomID": String
-                        }
-                      ]
+                        ]
                     })
-                    request
-                      .then((result) => {
+                request
+                    .then((result) => {
                         console.log(result.body)
-                      })
-                      .catch((err) => {
+                    })
+                    .catch((err) => {
                         console.log(err.statusCode)
-                      })
+                    })
             }
             else {
                 return res.status(400).send({
@@ -356,11 +356,17 @@ app.get("/api/cek_saldo/:userid", async (req, res) => {
 
 app.get("/api/list-winning", async function (req, res) {
     let date_ob = new Date();
-    var jamnow = date_ob.getHours() + ":" + date_ob.getMinutes() + ":" + date_ob.getSeconds(); 
+    // var jamnow = date_ob.getHours() + ":" + date_ob.getMinutes() + ":" + date_ob.getSeconds();
+    var jamnow = "20:11:00";
+    var unik = await Auction.findAll({
+        where: {
+            waktu_akhir: {
+                [Op.lte]: jamnow,
+            }
+        }
+    })
 
-    var unik = await Auction.findAll({where: { waktu_akhir, lte, jamnow } })
-
-    res.status(200).json(unik); 
+    res.status(200).json(unik);
 });
 
 app.get("/api/search_action/:auctionid", async (req, res) => {
