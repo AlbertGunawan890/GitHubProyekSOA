@@ -36,7 +36,7 @@ CREATE TABLE `auction` (
 /*Data for the table `auction` */
 
 insert  into `auction`(`id_auction`,`nama`,`tanggal`,`waktu_awal`,`waktu_akhir`,`id_barang`,`minimal_bid`) values 
-('A0001','a','2021-01-05','11:06:30','11:06:30','B0001','1000');
+('A0001','a','2021-01-05','11:06:30','16:06:30','B0001','1000');
 
 /*Table structure for table `barang` */
 
