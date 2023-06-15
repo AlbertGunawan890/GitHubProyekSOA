@@ -648,3 +648,31 @@ app.post("/api/bid_auction", async function (req, res) {
         });
     }
 });
+
+
+app.post("/api/admin/deleteItem/:id_barang", async (req,res) => {
+    let id_barang = req.params.id_barang
+    try {
+        const checkBarang = await Barang.findAll({
+            where:{
+                id_barang: id_barang
+            }
+        });
+        if (!checkBarang) {
+            throw "Barang tidak ada!!";
+        }
+        barang = await Barang.destroy({
+            where:{
+                id_barang: id_barang
+            }
+        });  
+    } catch (error) {
+        return res.status(400).send({
+            message: "Delete Failed!!",
+            error,
+        });
+    }
+    return res.status(200).send({
+        message: "Delete Success!!"
+    })
+});

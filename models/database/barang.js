@@ -28,7 +28,7 @@ Barang.init(
             type: DataTypes.STRING,
             allowNull:false
         },
-        detai_barang : {
+        detail_barang : {
             type: DataTypes.STRING,
             allowNull: false
         }
