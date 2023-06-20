@@ -6,6 +6,7 @@ app.use(express.urlencoded({ extended: true }))
 const Sequelize = require('sequelize');
 const { Op, where } = require("sequelize");
 const { getDB } = require("./dbase");
+const multer = require('multer');
 const joi = require('joi');
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
