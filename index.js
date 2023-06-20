@@ -28,7 +28,18 @@ const sequelize = getDB();
 Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
 Auction.belongsTo(Barang, { foreignKey: "id_barang" });
 Auction.belongsTo(User, { foreignKey: "pemenang" })
+var myStorage = multer.diskStorage({
+    destination: function (req, file, callback){
+        callback(null, './uploads/')
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.originalname);
+    }
+})
 
+var upd = multer({
+    storage: myStorage
+});
 
 app.listen(app.get("port"), () => {
     console.log(`Server started at http://localhost:${app.get("port")}`);
@@ -477,7 +488,7 @@ app.post("/api/create_auction", async function (req, res) {
 })
 
 
-app.post("/api/admin/addBarang", async function (req, res) {
+app.post("/api/admin/addBarang", upd.single('photo') , async function (req, res) {
 
     let barang = null;
     let { nama_barang, id_jenis, harga, detail_barang } = req.body
@@ -501,12 +512,14 @@ app.post("/api/admin/addBarang", async function (req, res) {
             }
         )
         let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
+        let temp = './uploads/'+req.file.filename;
         barang = await Barang.create({
             id_barang: newId,
             nama_barang: nama_barang,
             id_jenis: id_jenis,
             harga: harga,
-            detail_barang: detail_barang
+            detail_barang: detail_barang,
+            gambar: temp
         })
     } catch (error) {
         return res.status(400).send({

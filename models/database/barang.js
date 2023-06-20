@@ -31,6 +31,10 @@ Barang.init(
         detail_barang : {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        gambar: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     },
     {
