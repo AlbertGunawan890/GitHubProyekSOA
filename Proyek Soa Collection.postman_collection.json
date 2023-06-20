@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6058edb9-4b41-4205-a7b5-5c6777c0967f",
+		"_postman_id": "e2ec5d68-5348-4f58-8159-e8874da74ad2",
 		"name": "Proyek Soa Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27017339"
@@ -28,7 +28,7 @@
 						},
 						{
 							"key": "username",
-							"value": "qwe",
+							"value": "teje",
 							"type": "text"
 						},
 						{
@@ -50,19 +50,28 @@
 							"key": "notelp",
 							"value": "123123",
 							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "teje@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "tipe_user",
+							"value": "admin",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/register/admin",
+					"raw": "localhost:3000/api/register",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"register",
-						"admin"
+						"register"
 					]
 				}
 			},
@@ -90,7 +99,7 @@
 						},
 						{
 							"key": "username",
-							"value": "shawn",
+							"value": "teje",
 							"type": "text"
 						},
 						{
@@ -112,19 +121,28 @@
 							"key": "notelp",
 							"value": "123123",
 							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "teje@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "tipe_user",
+							"value": "customer",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/register/customer",
+					"raw": "localhost:3000/api/register",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"register",
-						"customer"
+						"register"
 					]
 				}
 			},
@@ -153,7 +171,7 @@
 						},
 						{
 							"key": "username",
-							"value": "shawn",
+							"value": "teje",
 							"type": "text"
 						},
 						{
@@ -272,7 +290,7 @@
 				"header": [
 					{
 						"key": "x-auth-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDEiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InF3ZSIsInBhc3N3b3JkX3VzZXIiOiJhMTIzIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiYWRtaW4iLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODU1MjEyMDYsImV4cCI6MTY4NTUyNzIwNn0.CoI-fiYX2WdzzZvYqI66ymRVE6tsW_NRGOmYBsxZzpQ",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDIiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUiLCJlbWFpbF91c2VyIjoidGVqZUBnbWFpbC5jb20iLCJwYXNzd29yZF91c2VyIjoiJDJiJDEwJFFoQWNqTTFvNWR0eXBNUzM3UzRsQmVtQlkyS011dzBXWjExMWZOeldXdFFIelp5bXF0azlLIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiYWRtaW4iLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODcyMzgyNjAsImV4cCI6MTY4NzI1NjI2MH0.KRxoWXK9tOrzQVmHVZN2OjwqEtDyXguX7dacyWC6k7U",
 						"type": "text"
 					}
 				],
@@ -286,17 +304,17 @@
 						},
 						{
 							"key": "tanggal",
-							"value": "01/05/2021",
+							"value": "20-06-2023",
 							"type": "text"
 						},
 						{
 							"key": "waktu_awal",
-							"value": "11:06:30",
+							"value": "03:00:00",
 							"type": "text"
 						},
 						{
 							"key": "waktu_akhir",
-							"value": "11:06:30",
+							"value": "23:00:00",
 							"type": "text"
 						},
 						{
@@ -370,7 +388,7 @@
 				"header": [
 					{
 						"key": "x-auth-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDEiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InF3ZSIsInBhc3N3b3JkX3VzZXIiOiJhMTIzIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiY3VzdG9tZXIiLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODU5NDQ0OTEsImV4cCI6MTY4NTk1MDQ5MX0.HLOleMOVzZL0R3s69kZ6XKU3UbHnS1ij1zZHk4Y9Y-o",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDMiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUxIiwiZW1haWxfdXNlciI6InRlamVAZ21haWwuY29tIiwicGFzc3dvcmRfdXNlciI6IiQyYiQxMCRwejJGL1RQODl0M1VvdHI4VXVBRzJlVmJ0NWxrNTB3RzRHQTdRWTR3MmRTOWFmNGRQRzJFTyIsIm5pa191c2VyIjoxMjMxMjMsImFsYW1hdF91c2VyIjoiYSIsIm5vdGVscF91c2VyIjoxMjMxMjMsInRpcGVfdXNlciI6ImN1c3RvbWVyIiwic2FsZG9fdXNlciI6IjAiLCJzdGF0dXNfdXNlciI6IjEifSwiaWF0IjoxNjg3MjM5NTA2LCJleHAiOjE2ODcyNTc1MDZ9.oERIAOFmzQt9ifwsntOPWiDDO0jM_1OMTWuzCDHAFf8",
 						"type": "text"
 					}
 				],
@@ -379,12 +397,12 @@
 					"urlencoded": [
 						{
 							"key": "id_auction",
-							"value": "A0001",
+							"value": "A0003",
 							"type": "text"
 						},
 						{
 							"key": "bid",
-							"value": "1000",
+							"value": "1005",
 							"type": "text"
 						}
 					]

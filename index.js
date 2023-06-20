@@ -26,6 +26,7 @@ const sequelize = getDB();
 // );
 Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
 Auction.belongsTo(Barang, { foreignKey: "id_barang" });
+Auction.belongsTo(User, { foreignKey: "pemenang" })
 
 
 app.listen(app.get("port"), () => {
@@ -447,14 +448,15 @@ app.post("/api/create_auction", async function (req, res) {
         if (userlogin.userlogin.tipe_user == "admin") {
             let data_auction = await Auction.findAll();
             let newId = "A" + String(data_auction.length + 1).padStart(4, '0')
+            var newtanggal = tanggal.split("-").reverse().join("-");
             Auction.create({
                 id_auction: newId,
                 nama: nama,
-                tanggal: tanggal,
+                tanggal: newtanggal,
                 waktu_awal: waktu_awal,
                 waktu_akhir: waktu_akhir,
                 id_barang: id_barang,
-                minimal_bid: minimal_bid
+                minimal_bid: minimal_bid,
             });
             return res.status(200).send({
                 id_auction: newId,
@@ -631,13 +633,31 @@ app.post("/api/bid_auction", async function (req, res) {
             let newId = "L" + String(data_log_auction.length + 1).padStart(4, '0');
             var d = new Date();
             let jam = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-
+            if(data_auction[0].waktu_akhir<jam){
+                return res.status(400).send({"message":"Waktu auction telah berakhir"});
+            }
+            // console.log((d.getMonth()+1).toString().padStart(2,"0"));
+            // console.log(d.getFullYear()+"-"+((d.getMonth()+1)).toString().padStart(2, '0')+"-"+d.getDate());
+            // console.log(data_auction[0].tanggal);
+            if (d.getFullYear()+"-"+((d.getMonth()+1)).toString().padStart(2, '0')+"-"+d.getDate()!=data_auction[0].tanggal) {
+                return res.status(400).send({"message":"tanggal auction sudah terlewat"});
+            }
             let log = await log_auction.create({
                 "id_log": newId,
                 "id_auction": id_auction,
                 "id_user": userlogin.userlogin.id_user,
                 "bid": bid,
                 "waktu": jam
+            });
+            await Auction.update({
+                pemenang:userlogin.userlogin.id_user
+            },
+            {
+                where: {
+                    id_auction: {
+                        [Op.eq]: id_auction
+                    }
+                }                
             });
             return res.status(201).send(log);
         }

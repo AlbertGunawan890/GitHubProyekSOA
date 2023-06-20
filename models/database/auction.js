@@ -40,6 +40,10 @@ Auction.init(
             type: DataTypes.STRING,
             allowNull:false
         },
+        pemenang:{
+            type: DataTypes.STRING,
+            allowNull:true
+        }
         
     },
     {
