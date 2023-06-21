@@ -13,6 +13,7 @@ const axios = require("axios");
 const bcrypt = require("bcrypt")
 const Mailjet = require('node-mailjet');
 const dbase = require("./dbase");
+const fs = require('fs');
 const Barang = require("./models/database/barang");
 const Jenis = require("./models/database/jenis");
 const user = require("./models/database/user");
@@ -25,11 +26,11 @@ const sequelize = getDB();
 //     process.env.MJ_APIKEY_PUBLIC,
 //     process.env.MJ_APIKEY_PRIVATE,
 // );
-Barang.belongsTo(Jenis, { foreignKey: "id_jenis" });
+Barang.belongsTo(Jenis, { as: 'Jenis', foreignKey: "id_jenis" });
 Auction.belongsTo(Barang, { foreignKey: "id_barang" });
 Auction.belongsTo(User, { foreignKey: "pemenang" })
 var myStorage = multer.diskStorage({
-    destination: function (req, file, callback){
+    destination: function (req, file, callback) {
         callback(null, './uploads/')
     },
     filename: function (req, file, callback) {
@@ -368,19 +369,38 @@ app.get("/api/cek_saldo/:userid", async (req, res) => {
 });
 
 app.get("/api/list-winning", async function (req, res) {
-    let date_ob = new Date();
-    var jamnow = date_ob.getHours() + ":" + date_ob.getMinutes() + ":" + date_ob.getSeconds();
 
-    var jamnya = await Auction.findAll({
-        where: {
-            waktu_akhir: 
+    if (!req.header("x-auth-token")) {
+        return res.status(401).send({ "message": "UNATHORIZED" });
+    }
+    try {
+        userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+        var winner = await Auction.findAll({
+            where: {
+                pemenang:
+                {
+                    [Op.eq]: userlogin.userlogin.id_user,
+                }
+            },
+            attributes: ['id_auction', 'tanggal'],
+            include: [{
+                model: User,
+                attributes: ['nama_user'],
+            },
             {
-                [Op.lte]: jamnow,
-            }
-        }
-    })
+                model: Barang,
+                attributes: ['nama_barang', 'harga', 'detail_barang'],
+            }],
+        })
+        if (winner.length > 0) {
+            return res.status(200).send(winner);
+        } else {
 
-    res.status(200).json(jamnya);
+            return res.status(400).send({ "message": "Belum pernah memenangkan auction" });
+        }
+    } catch (error) {
+        res.status(404).send(error);
+    }
 });
 
 app.get("/api/search_action/:auctionid", async (req, res) => {
@@ -440,11 +460,15 @@ app.get("/api/list_barang/:jenis", async function (req, res) {
     let data = await Auction.findAll({
         include: {
             model: Barang,
-            where: {
-                id_jenis: {
-                    [Op.like]: keyword
+            include: {
+                model: Jenis,
+                where: {
+                    nama_jenis: {
+                        [Op.like]: keyword
+                    }
                 }
             },
+
         },
     });
     if (data.length == 0) {
@@ -488,7 +512,7 @@ app.post("/api/create_auction", async function (req, res) {
 })
 
 
-app.post("/api/admin/addBarang", upd.single('photo') , async function (req, res) {
+app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) {
 
     let barang = null;
     let { nama_barang, id_jenis, harga, detail_barang } = req.body
@@ -502,17 +526,9 @@ app.post("/api/admin/addBarang", upd.single('photo') , async function (req, res)
         await schema.validateAsync(req.body)
         let newIdPrefix = "B"
         let keyword = `%${newIdPrefix}%`
-        let similarUID = await Barang.findAll(
-            {
-                where: {
-                    id_barang: {
-                        [Op.like]: keyword
-                    }
-                }
-            }
-        )
+        let similarUID = await Barang.findAll()
         let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
-        let temp = './uploads/'+req.file.filename;
+        let temp = './uploads/' + req.file.filename;
         barang = await Barang.create({
             id_barang: newId,
             nama_barang: nama_barang,
@@ -532,53 +548,66 @@ app.post("/api/admin/addBarang", upd.single('photo') , async function (req, res)
     })
 });
 
-app.get("/api/nama_barang/:nama", async function (req, res) {
+app.get("/api/data_auction_by_nama_barang/:nama", async function (req, res) {
     let nama = req.params.nama;
-    let barang = await Barang.findAll({
-        where: {
-            nama_barang: {
-                [Op.eq]: nama.toString()
-            }
-        },
-        attributes:["id_barang","nama_barang","harga"],
+    let keyword = `%${nama}%`
+    let barang = await Auction.findAll({
+        // where: {
+        //     nama_barang: {
+        //         [Op.like]: nama
+        //     }
+        // },
+        // attributes:["id_barang","nama_barang","harga"],
         include: [{
-            model: Jenis,
-            attributes: ['nama_jenis'],
-            required: false,
-            as:"Jenis"
+            model: Barang,
+            attributes: ["id_barang", "nama_barang", "harga", "detail_barang"],
+            include: {
+                model: Jenis,
+                as: "Jenis"
+            },
+            // attributes: ['nama_jenis'],
+            where: {
+                nama_barang: {
+                    [Op.like]: keyword
+                }
+            },
+            // as:"Jenis"
         }],
     });
+
     if (barang.length == 0) {
         return res.status(400).send({
             message: "Barang tidak ditemukkan!"
         });
-    } 
+    }
     return res.status(201).send({
         barang
     })
 });
 
-app.get("/api/id_barang/:id", async function (req, res) {
+app.get("/api/data_auction_by_id_barang/:id", async function (req, res) {
     let id = req.params.id;
-    let barang = await Barang.findAll({
+    let barang = await Auction.findAll({
         where: {
             id_barang: {
-                [Op.eq]: id.toString()
+                [Op.eq]: id
             }
         },
-        attributes:["id_barang","nama_barang","harga"],
-        include: [{
-            model: Jenis,
-            attributes: ['nama_jenis'],
-            required: false,
-            as:"Jenis"
-        }],
+        // attributes:["id_barang","nama_barang","harga"],
+        include: {
+            model: Barang,
+            attributes: ["id_barang", "nama_barang", "harga", "detail_barang"],
+            include: {
+                model: Jenis,
+                as: "Jenis"
+            }
+        }
     });
     if (barang.length == 0) {
         return res.status(400).send({
             message: "Barang tidak ditemukkan!"
         });
-    } 
+    }
     return res.status(201).send({
         barang
     })
@@ -647,14 +676,14 @@ app.post("/api/bid_auction", async function (req, res) {
             let newId = "L" + String(data_log_auction.length + 1).padStart(4, '0');
             var d = new Date();
             let jam = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-            if(data_auction[0].waktu_akhir<jam){
-                return res.status(400).send({"message":"Waktu auction telah berakhir"});
+            if (data_auction[0].waktu_akhir < jam) {
+                return res.status(400).send({ "message": "Waktu auction telah berakhir" });
             }
             // console.log((d.getMonth()+1).toString().padStart(2,"0"));
             // console.log(d.getFullYear()+"-"+((d.getMonth()+1)).toString().padStart(2, '0')+"-"+d.getDate());
             // console.log(data_auction[0].tanggal);
-            if (d.getFullYear()+"-"+((d.getMonth()+1)).toString().padStart(2, '0')+"-"+d.getDate()!=data_auction[0].tanggal) {
-                return res.status(400).send({"message":"tanggal auction sudah terlewat"});
+            if (d.getFullYear() + "-" + ((d.getMonth() + 1)).toString().padStart(2, '0') + "-" + d.getDate() != data_auction[0].tanggal) {
+                return res.status(400).send({ "message": "tanggal auction sudah terlewat" });
             }
             let log = await log_auction.create({
                 "id_log": newId,
@@ -664,15 +693,15 @@ app.post("/api/bid_auction", async function (req, res) {
                 "waktu": jam
             });
             await Auction.update({
-                pemenang:userlogin.userlogin.id_user
+                pemenang: userlogin.userlogin.id_user
             },
-            {
-                where: {
-                    id_auction: {
-                        [Op.eq]: id_auction
+                {
+                    where: {
+                        id_auction: {
+                            [Op.eq]: id_auction
+                        }
                     }
-                }                
-            });
+                });
             return res.status(201).send(log);
         }
     } catch (error) {
@@ -684,11 +713,11 @@ app.post("/api/bid_auction", async function (req, res) {
 });
 
 
-app.post("/api/admin/deleteItem/:id_barang", async (req,res) => {
+app.post("/api/admin/deleteItem/:id_barang", async (req, res) => {
     let id_barang = req.params.id_barang
     try {
         const checkBarang = await Barang.findAll({
-            where:{
+            where: {
                 id_barang: id_barang
             }
         });
@@ -696,10 +725,10 @@ app.post("/api/admin/deleteItem/:id_barang", async (req,res) => {
             throw "Barang tidak ada!!";
         }
         barang = await Barang.destroy({
-            where:{
+            where: {
                 id_barang: id_barang
             }
-        });  
+        });
     } catch (error) {
         return res.status(400).send({
             message: "Delete Failed!!",
@@ -709,4 +738,61 @@ app.post("/api/admin/deleteItem/:id_barang", async (req,res) => {
     return res.status(200).send({
         message: "Delete Success!!"
     })
+});
+
+app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
+    let { id_barang, nama_barang, id_jenis, harga, detail_barang } = req.body
+    let oldname = "";
+    if(!req.header('x-auth-token')){
+        fs.unlinkSync(`${"./uploads/"+req.file.filename}`);
+        return res.status(404).send("Unauthorized");
+    }
+    try {
+        let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+        if (userlogin.userlogin.tipe_user == "admin") {
+            let barang = await Barang.findAll({
+                where:{
+                    id_barang: id_barang
+                }
+            })
+            if(barang.length > 0){
+                barang.forEach(e => {
+                    oldname = e.gambar
+                });
+                let newname = "./uploads/"+req.file.filename;
+                fs.renameSync(`${newname}`,`${oldname}`)
+                await Barang.update({
+                    nama_barang: nama_barang,
+                    id_jenis: id_jenis,
+                    harga: harga,
+                    detail_barang: detail_barang,
+                    gambar: newname
+                },
+                    {
+                        where: {
+                            id_barang: {
+                                [Op.eq]: id_barang
+                            }
+                        }
+                    });
+               
+                return res.status(201).send({ 
+                    message: "Barang berhasil diupdate oleh "+userlogin.userlogin.nama_user,
+                    barang
+                });
+            }else{
+                fs.unlinkSync(`${"./uploads/"+req.file.filename}`);
+                return res.status(400).send({
+                    message: "barang tidak ditemukkan"
+                });
+            }
+           
+        }
+    } catch (error) {
+        fs.unlinkSync(`${"./uploads/"+req.file.filename}`);
+        return res.status(400).send({
+            message: "Update Gagal",
+            error,
+        });
+    }
 });

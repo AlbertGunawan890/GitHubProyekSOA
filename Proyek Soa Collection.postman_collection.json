@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "e2ec5d68-5348-4f58-8159-e8874da74ad2",
+		"_postman_id": "34bc9fe8-5f6e-4d4f-a00e-2ebf4d0bd237",
 		"name": "Proyek Soa Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "27017339"
+		"_exporter_id": "25308755"
 	},
 	"item": [
 		{
@@ -442,6 +442,151 @@
 							"key": "jenis",
 							"value": "m"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Data Auction by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/data_auction_by_id_barang/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"data_auction_by_id_barang",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "B0001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Data Auction by Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/data_auction_by_nama_barang/:nama",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"data_auction_by_nama_barang",
+						":nama"
+					],
+					"variable": [
+						{
+							"key": "nama",
+							"value": "ini"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Winning",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUiLCJlbWFpbF91c2VyIjoidGVqZUBnbWFpbC5jb20iLCJwYXNzd29yZF91c2VyIjoiJDJiJDEwJE82ZWQwVjlNOE1JTHlQTjFnVC42Zi5Ha0t2R05Pb3lZUG9vS1lDbkYwSU1zcklycFBjQ1gyIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiY3VzdG9tZXIiLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODcyNDc3NDgsImV4cCI6MTY4NzI2NTc0OH0.cSi3fA5iMaiLz6n9MjrsTMWNvOzye2x3erFzktOTpng",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:3000/api/list-winning",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"list-winning"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Barang ",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUxIiwiZW1haWxfdXNlciI6InRlamVAZ21haWwuY29tIiwicGFzc3dvcmRfdXNlciI6IiQyYiQxMCRLREhGZ01obG0uRnlwSVdmczl4bk9lMkZJRkVsOXhmcGgzQ1ZUNVJwUVhBWVdYZENwTHJBRyIsIm5pa191c2VyIjoxMjMxMjMsImFsYW1hdF91c2VyIjoiYSIsIm5vdGVscF91c2VyIjoxMjMxMjMsInRpcGVfdXNlciI6ImFkbWluIiwic2FsZG9fdXNlciI6IjAiLCJzdGF0dXNfdXNlciI6IjEifSwiaWF0IjoxNjg3MzUyMjY0LCJleHAiOjE2ODczNzAyNjR9.HjATGyIm1CzSoMBeYRxwUC2r4DSRkxL4hV6DAH1kTqU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id_barang",
+							"value": "B0001",
+							"type": "text"
+						},
+						{
+							"key": "nama_barang",
+							"value": "initestuploadbarang",
+							"type": "text"
+						},
+						{
+							"key": "id_jenis",
+							"value": "M0001",
+							"type": "text"
+						},
+						{
+							"key": "harga",
+							"value": "10000",
+							"type": "text"
+						},
+						{
+							"key": "detail_barang",
+							"value": "ini cuma test update upload barang 1",
+							"type": "text"
+						},
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "/C:/Users/Jeffrey/Downloads/download.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/barang/edit",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"barang",
+						"edit"
 					]
 				}
 			},
