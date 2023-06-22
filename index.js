@@ -57,16 +57,16 @@ app.listen(app.get("port"), () => {
 
 
 app.post("/api/register", async (req, res) => {
-    // try {
-    //     var { error } = await joi.object({
-    //         nama: joi.string().require(),
-    //         username: joi.string().required(),
-    //         password: joi.string().required(),
-    //         nik: joi.string().required(),
-    //         alamat: joi.string().required(),
-    //         notelp: joi.string().required(),
-    //         saldo: joi.string().required(),
-    //     }).validateAsync(req.body);
+    try {
+        var { error } = await joi.object({
+            nama: joi.string().require(),
+            username: joi.string().required(),
+            password: joi.string().required(),
+            nik: joi.string().required(),
+            alamat: joi.string().required(),
+            notelp: joi.string().required(),
+            saldo: joi.string().required(),
+        }).validateAsync(req.body);
 
         var id_user = "";
         await user.findAll().then((duser) => {
