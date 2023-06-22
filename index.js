@@ -21,7 +21,7 @@ const Auction = require("./models/database/auction");
 const log_auction = require("./models/database/log_auction");
 const User = require("./models/database/user");
 const sequelize = getDB();
-
+// key = 0b41525e69d60e5c490c2a3f5269d789
 // const mailjet = Mailjet.apiConnect(
 //     process.env.MJ_APIKEY_PUBLIC,
 //     process.env.MJ_APIKEY_PRIVATE,
@@ -743,24 +743,24 @@ app.post("/api/admin/deleteItem/:id_barang", async (req, res) => {
 app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
     let { id_barang, nama_barang, id_jenis, harga, detail_barang } = req.body
     let oldname = "";
-    if(!req.header('x-auth-token')){
-        fs.unlinkSync(`${"./uploads/"+req.file.filename}`);
+    if (!req.header('x-auth-token')) {
+        fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
         return res.status(404).send("Unauthorized");
     }
     try {
         let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
         if (userlogin.userlogin.tipe_user == "admin") {
             let barang = await Barang.findAll({
-                where:{
+                where: {
                     id_barang: id_barang
                 }
             })
-            if(barang.length > 0){
+            if (barang.length > 0) {
                 barang.forEach(e => {
                     oldname = e.gambar
                 });
-                let newname = "./uploads/"+req.file.filename;
-                fs.renameSync(`${newname}`,`${oldname}`)
+                let newname = "./uploads/" + req.file.filename;
+                fs.renameSync(`${newname}`, `${oldname}`)
                 await Barang.update({
                     nama_barang: nama_barang,
                     id_jenis: id_jenis,
@@ -775,24 +775,68 @@ app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
                             }
                         }
                     });
-               
-                return res.status(201).send({ 
-                    message: "Barang berhasil diupdate oleh "+userlogin.userlogin.nama_user,
+
+                return res.status(201).send({
+                    message: "Barang berhasil diupdate oleh " + userlogin.userlogin.nama_user,
                     barang
                 });
-            }else{
-                fs.unlinkSync(`${"./uploads/"+req.file.filename}`);
+            } else {
+                fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
                 return res.status(400).send({
                     message: "barang tidak ditemukkan"
                 });
             }
-           
+
         }
     } catch (error) {
-        fs.unlinkSync(`${"./uploads/"+req.file.filename}`);
+        fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
         return res.status(400).send({
             message: "Update Gagal",
             error,
         });
     }
+});
+
+app.post("/api/pengiriman", async (req, res) => {
+    let { origin, destination, weight, courier } = req.body;
+    const apikey = req.headers["x-api-key"];
+    let ongkir = "";
+    if (!apikey) {
+        return res.status(404).send({ "message": "Api key harus diisi!" });
+    }
+    let querySearch1 = `https://api.rajaongkir.com/starter/city?key=${apikey}`
+    let getdata1 = await axios.get(querySearch1);
+    let hasil1 = getdata1.data.rajaongkir.results;
+    let { id_origin, id_destination } = "";
+    hasil1.forEach(e => {
+        if (origin == e.city_name) {
+            id_origin = e.city_id;
+        }
+        if (destination == e.city_name) {
+            id_destination = e.city_id;
+        }
+    });
+
+    const hasil = await axios.post("https://api.rajaongkir.com/starter/cost",
+        {
+            origin: id_origin,
+            destination: id_destination,
+            weight: weight,
+            courier: courier,
+        },
+        {
+            headers: {
+                key: `${apikey}`
+            }
+        }
+    );
+
+    let hasil2 = hasil.data.rajaongkir.results;
+    hasil2.forEach(e => {
+        ongkir = e.costs[0].cost[0].value;
+    });
+
+    return res.status(201).send({
+        message: `Harga pengiriman barang dari ${origin} ke ${destination} sebesar Rp ${ongkir}`
+    })
 });

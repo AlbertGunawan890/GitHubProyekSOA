@@ -591,6 +591,56 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Cek Ongkir",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "0b41525e69d60e5c490c2a3f5269d789",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "origin",
+							"value": "Yogyakarta",
+							"type": "text"
+						},
+						{
+							"key": "destination",
+							"value": "Denpasar",
+							"type": "text"
+						},
+						{
+							"key": "weight",
+							"value": "1700",
+							"type": "text"
+						},
+						{
+							"key": "courier",
+							"value": "jne",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/pengiriman",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pengiriman"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
