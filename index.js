@@ -59,13 +59,14 @@ app.listen(app.get("port"), () => {
 app.post("/api/register", async (req, res) => {
     try {
         var { error } = await joi.object({
-            nama: joi.string().require(),
+            nama: joi.string().required(),
             username: joi.string().required(),
             password: joi.string().required(),
             nik: joi.string().required(),
             alamat: joi.string().required(),
             notelp: joi.string().required(),
-            saldo: joi.string().required(),
+            email: joi.string().required(),
+            tipe_user: joi.string().required(),
         }).validateAsync(req.body);
 
         var id_user = "";
@@ -253,9 +254,9 @@ app.post("/api/register", async (req, res) => {
                 return res.status(400).send({ "message": "salah masuk tipe user" })
             }
         }).catch((err) => { });
-    // } catch (error) {
-    //     return res.status(400).send(error.toString());
-    // }
+    } catch (error) {
+        return res.status(400).send(error.toString());
+    }
 });
 
 app.post("/api/login", async (req, res) => {
