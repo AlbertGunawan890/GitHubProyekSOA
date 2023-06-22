@@ -26,6 +26,13 @@ const sequelize = getDB();
 //     process.env.MJ_APIKEY_PUBLIC,
 //     process.env.MJ_APIKEY_PRIVATE,
 // );
+
+
+// apikey
+// b82c023d81135edb416f540324336f01
+// secreat key
+// 33fe96eb928ce08377f4b53ef900db19
+
 Barang.belongsTo(Jenis, { as: 'Jenis', foreignKey: "id_jenis" });
 Auction.belongsTo(Barang, { foreignKey: "id_barang" });
 Auction.belongsTo(User, { foreignKey: "pemenang" })
@@ -51,7 +58,7 @@ app.listen(app.get("port"), () => {
 
 app.post("/api/register", async (req, res) => {
     // try {
-    //     var {error} = await joi.object({
+    //     var { error } = await joi.object({
     //         nama: joi.string().require(),
     //         username: joi.string().required(),
     //         password: joi.string().required(),
@@ -60,195 +67,195 @@ app.post("/api/register", async (req, res) => {
     //         notelp: joi.string().required(),
     //         saldo: joi.string().required(),
     //     }).validateAsync(req.body);
+
+        var id_user = "";
+        await user.findAll().then((duser) => {
+            var double = 0;
+            var tipeUser = req.body.tipe_user;
+            var saldo = 0;
+
+            for (var i = 0; i < duser.length; i++) {
+                if (duser[i].username == req.body.username) {
+                    double += 1;
+                }
+            }
+            if (tipeUser == "customer" || tipeUser == "Customer" || tipeUser == "CUSTOMER") {
+                if (double == 0) {
+                    if (duser.length + 1 < 10) { id_user = "C00" + (duser.length + 1).toString(); }
+                    else if (duser.length + 1 < 100) { id_user = "C0" + (duser.length + 1).toString(); }
+                    else { id_user = "C" + (duser.length + 1).toString(); }
+
+
+                    bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
+                        .then(hash => {
+                            user.create({
+                                id_user: id_user,
+                                nama_user: req.body.nama,
+                                username_user: req.body.username,
+                                email_user: req.body.email,
+                                password_user: hash,
+                                nik_user: req.body.nik,
+                                alamat_user: req.body.alamat,
+                                notelp_user: req.body.notelp,
+                                tipe_user: tipeUser,
+                                saldo_user: saldo,
+                                status_user: 1
+                            }).then((data) => {
+                                res.json({
+                                    id_user: id_user,
+                                    nama_user: req.body.nama,
+                                    username_user: req.body.username,
+                                    email_user: req.body.email,
+                                    password_user: hash,
+                                    nik_user: req.body.nik,
+                                    alamat_user: req.body.alamat,
+                                    notelp_user: req.body.notelp,
+                                    tipe_user: tipeUser,
+                                    saldo_user: saldo,
+                                    status_user: 1
+                                });
+                            })
+
+                                .catch((err) => { });
+                        })
+                        .catch(err => console.error(err.message))
+                    const Mailjet = require('node-mailjet')
+
+                    const mailjet = Mailjet.apiConnect(
+                        "b82c023d81135edb416f540324336f01",
+                        "33fe96eb928ce08377f4b53ef900db19",
+                        {
+                            config: {},
+                            options: {}
+                        }
+                    )
+
+                    const request = mailjet
+                        .post("send", { 'version': 'v3.1' })
+                        .request({
+                            "Messages": [
+                                {
+                                    "From": {
+                                        "Email": "albert.g20@mhs.istts.ac.id",
+                                        "Name": "Library API"
+                                    },
+                                    "To": [
+                                        {
+                                            "Email": "" + req.body.email + "",
+                                            "Name": "'" + req.body.nama + "'"
+                                        }
+                                    ],
+                                    "Subject": "Confirmation Register",
+                                    "TextPart": "Click link below to activate your account",
+                                    "HTMLPart": "<h3>This is " + req.body.username + " as " + tipeUser + "?</h3><br />",
+                                    "CustomID": "AppGettingStartedTest"
+                                }
+                            ]
+                        })
+                    request
+                        .then((result) => {
+                            console.log(result.body)
+                        })
+                        .catch((err) => {
+                            console.log(err.statusCode)
+                        })
+                }
+                else {
+                    return res.status(400).send({
+                        message: "username sudah terdaftar"
+                    });
+                }
+            } else if (tipeUser == "Admin" || tipeUser == "admin" || tipeUser == "ADMIN") {
+                if (double == 0) {
+                    if (duser.length + 1 < 10) { id_user = "A00" + (duser.length + 1).toString(); }
+                    else if (duser.length + 1 < 100) { id_user = "A0" + (duser.length + 1).toString(); }
+                    else { id_user = "A" + (duser.length + 1).toString(); }
+
+                    bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
+                        .then(hash => {
+                            user.create({
+                                id_user: id_user,
+                                nama_user: req.body.nama,
+                                username_user: req.body.username,
+                                email_user: req.body.email,
+                                password_user: hash,
+                                nik_user: req.body.nik,
+                                alamat_user: req.body.alamat,
+                                notelp_user: req.body.notelp,
+                                tipe_user: tipeUser,
+                                saldo_user: saldo,
+                                status_user: 1
+                            }).then((data) => {
+                                res.json({
+                                    id_user: id_user,
+                                    nama_user: req.body.nama,
+                                    username_user: req.body.username,
+                                    email_user: req.body.email,
+                                    password_user: hash,
+                                    nik_user: req.body.nik,
+                                    alamat_user: req.body.alamat,
+                                    notelp_user: req.body.notelp,
+                                    tipe_user: tipeUser,
+                                    saldo_user: saldo,
+                                    status_user: 1
+                                });
+                            })
+                                .catch((err) => { });
+                        })
+                        .catch(err => console.error(err.message))
+                    const Mailjet = require('node-mailjet')
+
+                    const mailjet = Mailjet.apiConnect(
+                        "b82c023d81135edb416f540324336f01",
+                        "33fe96eb928ce08377f4b53ef900db19",
+                        {
+                            config: {},
+                            options: {}
+                        }
+                    )
+
+                    const request = mailjet
+                        .post("send", { 'version': 'v3.1' })
+                        .request({
+                            "Messages": [
+                                {
+                                    "From": {
+                                        "Email": "albert.g20@mhs.istts.ac.id",
+                                        "Name": "Proyek SOA"
+                                    },
+                                    "To": [
+                                        {
+                                            "Email": "" + req.body.email + "",
+                                            "Name": "'" + req.body.nama + "'"
+                                        }
+                                    ],
+                                    "Subject": "Confirmation Register",
+                                    "TextPart": "Click link below to activate your account",
+                                    "HTMLPart": "<center><h1>This is " + req.body.username + " as " + tipeUser + "</h1></center><br><center>click button below for activated </center><br><center><button >CLICK HERE</button> </center>",
+                                    "CustomID": String
+                                }
+                            ]
+                        })
+                    request
+                        .then((result) => {
+                            console.log(result.body)
+                        })
+                        .catch((err) => {
+                            console.log(err.statusCode)
+                        })
+                }
+                else {
+                    return res.status(400).send({
+                        message: "username sudah terdaftar"
+                    });
+                }
+            } else {
+                return res.status(400).send({ "message": "salah masuk tipe user" })
+            }
+        }).catch((err) => { });
     // } catch (error) {
     //     return res.status(400).send(error.toString());
     // }
-
-    var id_user = "";
-    await user.findAll().then((duser) => {
-        var double = 0;
-        var tipeUser = req.body.tipe_user;
-        var saldo = 0;
-
-        for (var i = 0; i < duser.length; i++) {
-            if (duser[i].username == req.body.username) {
-                double += 1;
-            }
-        }
-        if (tipeUser == "customer" || tipeUser == "Customer" || tipeUser == "CUSTOMER") {
-            if (double == 0) {
-                if (duser.length + 1 < 10) { id_user = "C00" + (duser.length + 1).toString(); }
-                else if (duser.length + 1 < 100) { id_user = "C0" + (duser.length + 1).toString(); }
-                else { id_user = "C" + (duser.length + 1).toString(); }
-
-
-                bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
-                    .then(hash => {
-                        user.create({
-                            id_user: id_user,
-                            nama_user: req.body.nama,
-                            username_user: req.body.username,
-                            email_user: req.body.email,
-                            password_user: hash,
-                            nik_user: req.body.nik,
-                            alamat_user: req.body.alamat,
-                            notelp_user: req.body.notelp,
-                            tipe_user: tipeUser,
-                            saldo_user: saldo,
-                            status_user: 1
-                        }).then((data) => {
-                            res.json({
-                                id_user: id_user,
-                                nama_user: req.body.nama,
-                                username_user: req.body.username,
-                                email_user: req.body.email,
-                                password_user: hash,
-                                nik_user: req.body.nik,
-                                alamat_user: req.body.alamat,
-                                notelp_user: req.body.notelp,
-                                tipe_user: tipeUser,
-                                saldo_user: saldo,
-                                status_user: 1
-                            });
-                        })
-
-                            .catch((err) => { });
-                    })
-                    .catch(err => console.error(err.message))
-                const Mailjet = require('node-mailjet')
-
-                const mailjet = Mailjet.apiConnect(
-                    "b82c023d81135edb416f540324336f01",
-                    "6af6ae99683e4e5adffaa00d35707597",
-                    {
-                        config: {},
-                        options: {}
-                    }
-                )
-
-                const request = mailjet
-                    .post("send", { 'version': 'v3.1' })
-                    .request({
-                        "Messages": [
-                            {
-                                "From": {
-                                    "Email": "albert.g20@mhs.istts.ac.id",
-                                    "Name": "Library API"
-                                },
-                                "To": [
-                                    {
-                                        "Email": "" + req.body.email + "",
-                                        "Name": "'" + req.body.nama + "'"
-                                    }
-                                ],
-                                "Subject": "Confirmation Register",
-                                "TextPart": "Click link below to activate your account",
-                                "HTMLPart": "<h3>This is " + req.body.username + " as " + tipeUser + "?</h3><br />",
-                                "CustomID": "AppGettingStartedTest"
-                            }
-                        ]
-                    })
-                request
-                    .then((result) => {
-                        console.log(result.body)
-                    })
-                    .catch((err) => {
-                        console.log(err.statusCode)
-                    })
-            }
-            else {
-                return res.status(400).send({
-                    message: "username sudah terdaftar"
-                });
-            }
-        } else if (tipeUser == "Admin" || tipeUser == "admin" || tipeUser == "ADMIN") {
-            if (double == 0) {
-                if (duser.length + 1 < 10) { id_user = "A00" + (duser.length + 1).toString(); }
-                else if (duser.length + 1 < 100) { id_user = "A0" + (duser.length + 1).toString(); }
-                else { id_user = "A" + (duser.length + 1).toString(); }
-
-                bcrypt.genSalt(10).then(salt => { return bcrypt.hash(req.body.password, salt); })
-                    .then(hash => {
-                        user.create({
-                            id_user: id_user,
-                            nama_user: req.body.nama,
-                            username_user: req.body.username,
-                            email_user: req.body.email,
-                            password_user: hash,
-                            nik_user: req.body.nik,
-                            alamat_user: req.body.alamat,
-                            notelp_user: req.body.notelp,
-                            tipe_user: tipeUser,
-                            saldo_user: saldo,
-                            status_user: 1
-                        }).then((data) => {
-                            res.json({
-                                id_user: id_user,
-                                nama_user: req.body.nama,
-                                username_user: req.body.username,
-                                email_user: req.body.email,
-                                password_user: hash,
-                                nik_user: req.body.nik,
-                                alamat_user: req.body.alamat,
-                                notelp_user: req.body.notelp,
-                                tipe_user: tipeUser,
-                                saldo_user: saldo,
-                                status_user: 1
-                            });
-                        })
-                            .catch((err) => { });
-                    })
-                    .catch(err => console.error(err.message))
-                const Mailjet = require('node-mailjet')
-
-                const mailjet = Mailjet.apiConnect(
-                    "b82c023d81135edb416f540324336f01",
-                    "6af6ae99683e4e5adffaa00d35707597",
-                    {
-                        config: {},
-                        options: {}
-                    }
-                )
-
-                const request = mailjet
-                    .post("send", { 'version': 'v3.1' })
-                    .request({
-                        "Messages": [
-                            {
-                                "From": {
-                                    "Email": "albert.g20@mhs.istts.ac.id",
-                                    "Name": "Proyek SOA"
-                                },
-                                "To": [
-                                    {
-                                        "Email": "" + req.body.email + "",
-                                        "Name": "'" + req.body.nama + "'"
-                                    }
-                                ],
-                                "Subject": "Confirmation Register",
-                                "TextPart": "Click link below to activate your account",
-                                "HTMLPart": "<center><h1>This is " + req.body.username + " as " + tipeUser + "</h1></center><br><center>click button below for activated </center><br><center><button >CLICK HERE</button> </center>",
-                                "CustomID": String
-                            }
-                        ]
-                    })
-                request
-                    .then((result) => {
-                        console.log(result.body)
-                    })
-                    .catch((err) => {
-                        console.log(err.statusCode)
-                    })
-            }
-            else {
-                return res.status(400).send({
-                    message: "username sudah terdaftar"
-                });
-            }
-        } else {
-            return res.status(400).send({ "message": "salah masuk tipe user" })
-        }
-    }).catch((err) => { });
 });
 
 app.post("/api/login", async (req, res) => {
@@ -478,74 +485,99 @@ app.get("/api/list_barang/:jenis", async function (req, res) {
 });
 
 app.post("/api/create_auction", async function (req, res) {
-    let { nama, tanggal, waktu_awal, waktu_akhir, id_barang, minimal_bid } = req.body;
+
     try {
-        let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
-        if (userlogin.userlogin.tipe_user == "admin") {
-            let data_auction = await Auction.findAll();
-            let newId = "A" + String(data_auction.length + 1).padStart(4, '0')
-            var newtanggal = tanggal.split("-").reverse().join("-");
-            Auction.create({
-                id_auction: newId,
-                nama: nama,
-                tanggal: newtanggal,
-                waktu_awal: waktu_awal,
-                waktu_akhir: waktu_akhir,
-                id_barang: id_barang,
-                minimal_bid: minimal_bid,
-            });
-            return res.status(200).send({
-                id_auction: newId,
-                nama: nama,
-                tanggal: tanggal,
-                waktu_awal: waktu_awal,
-                waktu_akhir: waktu_akhir,
-                id_barang: id_barang,
-                minimal_bid: minimal_bid
-            })
-        } else {
+        var { error } = await joi.object({
+            nama: joi.string().required(),
+            tanggal: joi.string().required(),
+            waktu_awal: joi.string().required(),
+            waktu_akhir: joi.string().required(),
+            id_barang: joi.string().required(),
+            minimal_bid: joi.string().required(),
+        }).validateAsync(req.body);
+
+        let { nama, tanggal, waktu_awal, waktu_akhir, id_barang, minimal_bid } = req.body;
+        try {
+            let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+            if (userlogin.userlogin.tipe_user == "admin") {
+                let data_auction = await Auction.findAll();
+                let newId = "A" + String(data_auction.length + 1).padStart(4, '0')
+                var newtanggal = tanggal.split("-").reverse().join("-");
+                Auction.create({
+                    id_auction: newId,
+                    nama: nama,
+                    tanggal: newtanggal,
+                    waktu_awal: waktu_awal,
+                    waktu_akhir: waktu_akhir,
+                    id_barang: id_barang,
+                    minimal_bid: minimal_bid,
+                });
+                return res.status(200).send({
+                    id_auction: newId,
+                    nama: nama,
+                    tanggal: tanggal,
+                    waktu_awal: waktu_awal,
+                    waktu_akhir: waktu_akhir,
+                    id_barang: id_barang,
+                    minimal_bid: minimal_bid
+                })
+            } else {
+                res.status(400).send({ "message": "BUKAN ADMIN" });
+            }
+        } catch (error) {
             res.status(400).send({ "message": "BUKAN ADMIN" });
         }
     } catch (error) {
-        res.status(400).send({ "message": "BUKAN ADMIN" });
+        return res.status(400).send(error.toString());
     }
-})
+});
 
 
 app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) {
 
-    let barang = null;
-    let { nama_barang, id_jenis, harga, detail_barang } = req.body
-    const schema = joi.object({
-        nama_barang: joi.string().min(10).required(),
-        id_jenis: joi.string().required(),
-        harga: joi.number().min(1000000).required(),
-        detail_barang: joi.string().required()
-    })
     try {
-        await schema.validateAsync(req.body)
-        let newIdPrefix = "B"
-        let keyword = `%${newIdPrefix}%`
-        let similarUID = await Barang.findAll()
-        let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
-        let temp = './uploads/' + req.file.filename;
-        barang = await Barang.create({
-            id_barang: newId,
-            nama_barang: nama_barang,
-            id_jenis: id_jenis,
-            harga: harga,
-            detail_barang: detail_barang,
-            gambar: temp
+        var { error } = await joi.object({
+            nama_barang: joi.string().required(),
+            id_jenis: joi.string().required(),
+            harga: joi.string().required(),
+            detail_barang: joi.string().required(),
+        }).validateAsync(req.body);
+
+        let barang = null;
+        let { nama_barang, id_jenis, harga, detail_barang } = req.body
+        const schema = joi.object({
+            nama_barang: joi.string().min(10).required(),
+            id_jenis: joi.string().required(),
+            harga: joi.number().min(1000000).required(),
+            detail_barang: joi.string().required()
+        })
+        try {
+            await schema.validateAsync(req.body)
+            let newIdPrefix = "B"
+            let keyword = `%${newIdPrefix}%`
+            let similarUID = await Barang.findAll()
+            let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
+            let temp = './uploads/' + req.file.filename;
+            barang = await Barang.create({
+                id_barang: newId,
+                nama_barang: nama_barang,
+                id_jenis: id_jenis,
+                harga: harga,
+                detail_barang: detail_barang,
+                gambar: temp
+            })
+        } catch (error) {
+            return res.status(400).send({
+                message: "Insert Failed",
+                error,
+            });
+        }
+        return res.status(201).send({
+            barang
         })
     } catch (error) {
-        return res.status(400).send({
-            message: "Insert Failed",
-            error,
-        });
+        return res.status(400).send(error.toString());
     }
-    return res.status(201).send({
-        barang
-    })
 });
 
 app.get("/api/data_auction_by_nama_barang/:nama", async function (req, res) {
@@ -615,189 +647,242 @@ app.get("/api/data_auction_by_id_barang/:id", async function (req, res) {
 
 app.post("/api/admin/addJenis", async function (req, res) {
 
-    let jenis = null;
-    let { nama_jenis } = req.body
-    const schema = joi.object({
-        nama_jenis: joi.string().min(5).required()
-    })
     try {
-        await schema.validateAsync(req.body)
-        let newIdPrefix = nama_jenis.substring(0, 1).toUpperCase()
-        let keyword = `%${newIdPrefix}%`
-        let similarUID = await Barang.findAll(
-            {
-                where: {
-                    id_jenis: {
-                        [Op.like]: keyword
+        var { error } = await joi.object({
+            nama_jenis: joi.string().required(),
+        }).validateAsync(req.body);
+
+        let jenis = null;
+        let { nama_jenis } = req.body
+        const schema = joi.object({
+            nama_jenis: joi.string().min(5).required()
+        })
+        try {
+            await schema.validateAsync(req.body)
+            let newIdPrefix = nama_jenis.substring(0, 1).toUpperCase()
+            let keyword = `%${newIdPrefix}%`
+            let similarUID = await Barang.findAll(
+                {
+                    where: {
+                        id_jenis: {
+                            [Op.like]: keyword
+                        }
                     }
                 }
-            }
-        )
-        let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
-        jenis = await Jenis.create({
-            id_jenis: newId,
-            nama_jenis: nama_jenis
-        })
-    } catch (error) {
-        return res.status(400).send({
-            message: "Insert Failed",
-            error,
-        });
-    }
+            )
+            let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
+            jenis = await Jenis.create({
+                id_jenis: newId,
+                nama_jenis: nama_jenis
+            })
+        } catch (error) {
+            return res.status(400).send({
+                message: "Insert Failed",
+                error,
+            });
+        }
 
-    return res.status(201).send({
-        jenis
-    })
+        return res.status(201).send({
+            jenis
+        })
+
+    } catch (error) {
+        return res.status(400).send(error.toString());
+    }
 
 });
 
 app.post("/api/bid_auction", async function (req, res) {
-    let { id_auction, bid } = req.body;
+
     try {
-        let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
-        if (userlogin.userlogin.tipe_user == "customer") {
-            let data_log_auction = await log_auction.findAll();
-            if (data_log_auction.length > 0) {
-                if (parseInt(data_log_auction[data_log_auction.length - 1].bid) >= parseInt(bid)) {
-                    return res.status(400).send({ "message": "Bid sekarang sudah berada di " + data_log_auction[data_log_auction.length - 1].bid })
-                }
-            }
-            let data_auction = await Auction.findAll({
-                where: {
-                    id_auction: {
-                        [Op.eq]: id_auction
+        var { error } = await joi.object({
+            id_auction: joi.string().required(),
+            bid: joi.number().required(),
+        }).validateAsync(req.body);
+
+        let { id_auction, bid } = req.body;
+        try {
+            let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+            if (userlogin.userlogin.tipe_user == "customer") {
+                let data_log_auction = await log_auction.findAll();
+                if (data_log_auction.length > 0) {
+                    if (parseInt(data_log_auction[data_log_auction.length - 1].bid) >= parseInt(bid)) {
+                        return res.status(400).send({ "message": "Bid sekarang sudah berada di " + data_log_auction[data_log_auction.length - 1].bid })
                     }
                 }
-            });
-            if (parseInt(bid) < parseInt(data_auction[0].minimal_bid)) {
-                return res.status(400).send({ "message": "Bid kurang dari minimal" });
-            }
-
-            let newId = "L" + String(data_log_auction.length + 1).padStart(4, '0');
-            var d = new Date();
-            let jam = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-            if (data_auction[0].waktu_akhir < jam) {
-                return res.status(400).send({ "message": "Waktu auction telah berakhir" });
-            }
-            // console.log((d.getMonth()+1).toString().padStart(2,"0"));
-            // console.log(d.getFullYear()+"-"+((d.getMonth()+1)).toString().padStart(2, '0')+"-"+d.getDate());
-            // console.log(data_auction[0].tanggal);
-            if (d.getFullYear() + "-" + ((d.getMonth() + 1)).toString().padStart(2, '0') + "-" + d.getDate() != data_auction[0].tanggal) {
-                return res.status(400).send({ "message": "tanggal auction sudah terlewat" });
-            }
-            let log = await log_auction.create({
-                "id_log": newId,
-                "id_auction": id_auction,
-                "id_user": userlogin.userlogin.id_user,
-                "bid": bid,
-                "waktu": jam
-            });
-            await Auction.update({
-                pemenang: userlogin.userlogin.id_user
-            },
-                {
+                let data_auction = await Auction.findAll({
                     where: {
                         id_auction: {
                             [Op.eq]: id_auction
                         }
                     }
                 });
-            return res.status(201).send(log);
+                if (parseInt(bid) < parseInt(data_auction[0].minimal_bid)) {
+                    return res.status(400).send({ "message": "Bid kurang dari minimal" });
+                }
+
+                let newId = "L" + String(data_log_auction.length + 1).padStart(4, '0');
+                var d = new Date();
+                let jam = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                if (data_auction[0].waktu_akhir < jam) {
+                    return res.status(400).send({ "message": "Waktu auction telah berakhir" });
+                }
+                // console.log((d.getMonth()+1).toString().padStart(2,"0"));
+                // console.log(d.getFullYear()+"-"+((d.getMonth()+1)).toString().padStart(2, '0')+"-"+d.getDate());
+                // console.log(data_auction[0].tanggal);
+                if (d.getFullYear() + "-" + ((d.getMonth() + 1)).toString().padStart(2, '0') + "-" + d.getDate() != data_auction[0].tanggal) {
+                    return res.status(400).send({ "message": "tanggal auction sudah terlewat" });
+                }
+                let log = await log_auction.create({
+                    "id_log": newId,
+                    "id_auction": id_auction,
+                    "id_user": userlogin.userlogin.id_user,
+                    "bid": bid,
+                    "waktu": jam
+                });
+                await Auction.update({
+                    pemenang: userlogin.userlogin.id_user
+                },
+                    {
+                        where: {
+                            id_auction: {
+                                [Op.eq]: id_auction
+                            }
+                        }
+                    });
+                return res.status(201).send(log);
+            }
+        } catch (error) {
+            return res.status(400).send({
+                message: "Bid Gagal",
+                error,
+            });
         }
     } catch (error) {
-        return res.status(400).send({
-            message: "Bid Gagal",
-            error,
-        });
+        return res.status(400).send(error.toString());
     }
 });
 
 
 app.post("/api/admin/deleteItem/:id_barang", async (req, res) => {
-    let id_barang = req.params.id_barang
-    try {
-        const checkBarang = await Barang.findAll({
-            where: {
-                id_barang: id_barang
-            }
-        });
-        if (!checkBarang) {
-            throw "Barang tidak ada!!";
-        }
-        barang = await Barang.destroy({
-            where: {
-                id_barang: id_barang
-            }
-        });
-    } catch (error) {
-        return res.status(400).send({
-            message: "Delete Failed!!",
-            error,
-        });
-    }
-    return res.status(200).send({
-        message: "Delete Success!!"
-    })
-});
 
-app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
-    let { id_barang, nama_barang, id_jenis, harga, detail_barang } = req.body
-    let oldname = "";
-    if (!req.header('x-auth-token')) {
-        fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
-        return res.status(404).send("Unauthorized");
-    }
     try {
-        let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
-        if (userlogin.userlogin.tipe_user == "admin") {
-            let barang = await Barang.findAll({
+        var { error } = await joi.object({
+            id_barang: joi.string().required(),
+        }).validateAsync(req.body);
+
+        let id_barang = req.params.id_barang
+        try {
+            const checkBarang = await Barang.findAll({
                 where: {
                     id_barang: id_barang
                 }
-            })
-            if (barang.length > 0) {
-                barang.forEach(e => {
-                    oldname = e.gambar
-                });
-                let newname = "./uploads/" + req.file.filename;
-                fs.renameSync(`${newname}`, `${oldname}`)
-                await Barang.update({
-                    nama_barang: nama_barang,
-                    id_jenis: id_jenis,
-                    harga: harga,
-                    detail_barang: detail_barang,
-                    gambar: newname
-                },
-                    {
-                        where: {
-                            id_barang: {
-                                [Op.eq]: id_barang
-                            }
-                        }
-                    });
-
-                return res.status(201).send({
-                    message: "Barang berhasil diupdate oleh " + userlogin.userlogin.nama_user,
-                    barang
-                });
-            } else {
-                fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
-                return res.status(400).send({
-                    message: "barang tidak ditemukkan"
-                });
+            });
+            if (!checkBarang) {
+                throw "Barang tidak ada!!";
             }
+            barang = await Barang.destroy({
+                where: {
+                    id_barang: id_barang
+                }
+            });
+        } catch (error) {
+            return res.status(400).send({
+                message: "Delete Failed!!",
+                error,
+            });
+        }
+        return res.status(200).send({
+            message: "Delete Success!!"
+        })
+    } catch (error) {
+        return res.status(400).send(error.toString());
+    }
+});
 
+app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
+
+    try {
+        var { error } = await joi.object({
+            id_barang: joi.string().required(),
+            nama_barang: joi.string().required(),
+            id_jenis: joi.string().required(),
+            harga: joi.string().required(),
+            detail_barang: joi.string().required(),
+        }).validateAsync(req.body);
+
+
+        let { id_barang, nama_barang, id_jenis, harga, detail_barang } = req.body
+        let oldname = "";
+        if (!req.header('x-auth-token')) {
+            fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
+            return res.status(404).send("Unauthorized");
+        }
+        try {
+            let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+            if (userlogin.userlogin.tipe_user == "admin") {
+                let barang = await Barang.findAll({
+                    where: {
+                        id_barang: id_barang
+                    }
+                })
+                if (barang.length > 0) {
+                    barang.forEach(e => {
+                        oldname = e.gambar
+                    });
+                    let newname = "./uploads/" + req.file.filename;
+                    fs.renameSync(`${newname}`, `${oldname}`)
+                    await Barang.update({
+                        nama_barang: nama_barang,
+                        id_jenis: id_jenis,
+                        harga: harga,
+                        detail_barang: detail_barang,
+                        gambar: newname
+                    },
+                        {
+                            where: {
+                                id_barang: {
+                                    [Op.eq]: id_barang
+                                }
+                            }
+                        });
+
+                    return res.status(201).send({
+                        message: "Barang berhasil diupdate oleh " + userlogin.userlogin.nama_user,
+                        barang
+                    });
+                } else {
+                    fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
+                    return res.status(400).send({
+                        message: "barang tidak ditemukkan"
+                    });
+                }
+
+            }
+        } catch (error) {
+            fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
+            return res.status(400).send({
+                message: "Update Gagal",
+                error,
+            });
         }
     } catch (error) {
-        fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
-        return res.status(400).send({
-            message: "Update Gagal",
-            error,
-        });
+        return res.status(400).send(error.toString());
     }
 });
 
 app.post("/api/pengiriman", async (req, res) => {
+
+
+    try {
+        var { error } = await joi.object({
+            origin: joi.string().required(),
+            destination: joi.string().required(),
+            weight: joi.string().required(),
+            courier: joi.string().required(),
+        }).validateAsync(req.body);
+
+
     let { origin, destination, weight, courier } = req.body;
     const apikey = req.headers["x-api-key"];
     let ongkir = "";
@@ -839,4 +924,7 @@ app.post("/api/pengiriman", async (req, res) => {
     return res.status(201).send({
         message: `Harga pengiriman barang dari ${origin} ke ${destination} sebesar Rp ${ongkir}`
     })
+} catch (error) {
+    return res.status(400).send(error.toString());
+}
 });
