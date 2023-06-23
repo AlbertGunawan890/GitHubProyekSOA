@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "34bc9fe8-5f6e-4d4f-a00e-2ebf4d0bd237",
+		"_postman_id": "634e4db5-8fc0-4a17-af62-0ec89bb3e671",
 		"name": "Proyek Soa Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25308755"
+		"_exporter_id": "25278569"
 	},
 	"item": [
 		{
@@ -28,12 +28,12 @@
 						},
 						{
 							"key": "username",
-							"value": "teje",
+							"value": "tejewe",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "a123",
+							"value": "123",
 							"type": "text"
 						},
 						{
@@ -637,6 +637,242 @@
 					"path": [
 						"api",
 						"pengiriman"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TOPUP BY ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6IndlIiwiZW1haWxfdXNlciI6ImFsYmVydC5nMjBAbWhzLmlzdHRzLmFjLmlkIiwicGFzc3dvcmRfdXNlciI6IiQyYiQxMCREdEcxemFhTThlLmdMRy5CTjRCSkF1WmJrcHVkZW9ISjZ6eUkwREJ4MHJoRi5WU2YyZlFDQyIsIm5pa191c2VyIjoxMjMxMjMxMjMxLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJhZG1pbiIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzUwNTI3NywiZXhwIjoxNjg3NTIzMjc3fQ.ftdsn63OnNX6KgsNGtDXELzLsUltyL_vPLmIai_lj1g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nominal",
+							"value": "10000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/topup/A001",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"topup",
+						"A001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CEK SALDO",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUiLCJlbWFpbF91c2VyIjoidGVqZUBnbWFpbC5jb20iLCJwYXNzd29yZF91c2VyIjoiJDJiJDEwJDdBc0MzZDJqaGlzR3g2bkxvMG9mdy5OM0ZsckE1RVZzS0dHcXZVVTZaNmV2VU9zMVI1eWc2IiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiY3VzdG9tZXIiLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODc1MDU5NDgsImV4cCI6MTY4NzUyMzk0OH0.gwmKlfdzXs5DD1BszmOkTIvKOE-QYlXCMqyJeySctfQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:3000/api/cek_saldo/A001",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"cek_saldo",
+						"A001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Barang",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDYiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamV3ZSIsImVtYWlsX3VzZXIiOiJ0ZWplQGdtYWlsLmNvbSIsInBhc3N3b3JkX3VzZXIiOiIkMmIkMTAkVFcyYVI4VTlKcDg2cTFaNTFCNmptT1kyQm5yVEhDanNUY0JoTy5CUmNYd29wdzZ2azVNRG0iLCJuaWtfdXNlciI6MTIzMTIzLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJhZG1pbiIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzUwNjMyMSwiZXhwIjoxNjg3NTI0MzIxfQ.rDhFqT7kde_PiRlVTLhv8DYUTLgZv2tnwDJEPSuCw5Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:3000/api/admin/deleteItem/:id_barang",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"admin",
+						"deleteItem",
+						":id_barang"
+					],
+					"query": [
+						{
+							"key": "id_barang",
+							"value": null,
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id_barang",
+							"value": "B0004"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Barang Min Max",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/list_barang/:min/:max",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"list_barang",
+						":min",
+						":max"
+					],
+					"variable": [
+						{
+							"key": "min",
+							"value": null
+						},
+						{
+							"key": "max",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Auction",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:3000/api/search_action/A0001",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"search_action",
+						"A0001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Jenis",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id_jenis",
+							"value": "M0001",
+							"type": "text"
+						},
+						{
+							"key": "nama",
+							"value": "Mobil",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/edit/jenis",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"edit",
+						"jenis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Jenis",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id_jenis",
+							"value": "P0001",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/delete/jenis",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"delete",
+						"jenis"
 					]
 				}
 			},
