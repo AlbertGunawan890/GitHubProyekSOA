@@ -33,9 +33,9 @@ const sequelize = getDB();
 // secreat key
 // 33fe96eb928ce08377f4b53ef900db19
 
-// Barang.belongsTo(Jenis, { as: 'Jenis', foreignKey: "id_jenis" });
-// Auction.belongsTo(Barang, { foreignKey: "id_barang" });
-// Auction.belongsTo(User, { foreignKey: "pemenang" })
+Barang.belongsTo(Jenis, { as: 'Jenis', foreignKey: "id_jenis" });
+Auction.belongsTo(Barang, { foreignKey: "id_barang" });
+Auction.belongsTo(User, { foreignKey: "pemenang" })
 var myStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, './uploads/')
@@ -55,7 +55,7 @@ app.listen(app.get("port"), () => {
 // status user 1 => akftif
 // status user 0 => tidak akftif
 
-
+// Nomor 1
 app.post("/api/register", async (req, res) => {
     try {
         var { error } = await joi.object({
@@ -259,6 +259,7 @@ app.post("/api/register", async (req, res) => {
     }
 });
 
+// Nomor 2
 app.post("/api/login", async (req, res) => {
 
     try {
@@ -299,6 +300,8 @@ app.post("/api/login", async (req, res) => {
     }
 });
 
+
+// Nomor 3
 app.post("/api/banuser", async (req, res) => {
     try {
         var { error } = await joi.object({
@@ -328,6 +331,7 @@ app.post("/api/banuser", async (req, res) => {
     }
 });
 
+// Nomor 4
 app.post("/api/topup/:userid", async (req, res) => {
     try {
         var { error } = await joi.object({
@@ -358,11 +362,12 @@ app.post("/api/topup/:userid", async (req, res) => {
     }
 });
 
+// Nomor 5
 app.get("/api/cek_saldo/:userid", async (req, res) => {
 
     try {
         userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
-        if (userlogin.userlogin.tipe_user == "user") {
+        if (userlogin.userlogin.tipe_user == "customer") {
             var datauser = await user.findAll({ where: { id_user: req.params.userid } });
             if (datauser.length > 0) {
                 // console.log(datauser[0].saldo_user);
@@ -371,11 +376,15 @@ app.get("/api/cek_saldo/:userid", async (req, res) => {
                 return res.status(200).send({ "message": "user id tidak ditemukan" });
             }
         }
+        else {
+            return res.status(400).send({"message": "bukan admin"});
+        }
     } catch (error) {
-        res.status(400).send({ "message": "BUKAN ADMIN" });
+        res.status(400).send(error);
     }
 });
 
+// Nomor 6
 app.get("/api/list-winning", async function (req, res) {
 
     if (!req.header("x-auth-token")) {
@@ -411,6 +420,7 @@ app.get("/api/list-winning", async function (req, res) {
     }
 });
 
+// Nomor 7
 app.get("/api/search_action/:auctionid", async (req, res) => {
 
     try {
@@ -435,7 +445,7 @@ app.get("/api/search_action/:auctionid", async (req, res) => {
     }
 });
 
-
+// Nomor 8
 app.get("/api/list_barang/:min/:max", async function (req, res) {
     let data = await Auction.findAll({
         include: {
@@ -445,23 +455,20 @@ app.get("/api/list_barang/:min/:max", async function (req, res) {
                     [Op.between]: [parseInt(req.params.min), parseInt(req.params.max)]
                 }
             },
+            include: [{
+                model: Jenis,
+                attributes: ['nama_jenis'],
+                as: "Jenis"
+            }],
         },
-        include: [{
-            model: Jenis,
-            attributes: ['nama_jenis'],
-            required: false,
-            as: "Jenis"
-        }],
-
-
     });
-    if (data_barang.length == 0) {
+    if (data.length == 0) {
         return res.status(404).send({ "message": "Barang tidak ditemukan!" });
     }
     return res.status(200).send(data);
 });
 
-
+// Nomor 9
 app.get("/api/list_barang/:jenis", async function (req, res) {
     let { jenis } = req.params;
     let keyword = `%${jenis}%`
@@ -470,6 +477,7 @@ app.get("/api/list_barang/:jenis", async function (req, res) {
             model: Barang,
             include: {
                 model: Jenis,
+                as : 'Jenis',
                 where: {
                     nama_jenis: {
                         [Op.like]: keyword
@@ -485,6 +493,7 @@ app.get("/api/list_barang/:jenis", async function (req, res) {
     return res.status(200).send(data);
 });
 
+// Nomor 10
 app.post("/api/create_auction", async function (req, res) {
 
     try {
@@ -533,7 +542,7 @@ app.post("/api/create_auction", async function (req, res) {
     }
 });
 
-
+// Nomor 11
 app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) {
 
     try {
@@ -581,6 +590,7 @@ app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) 
     }
 });
 
+// Nomor 12
 app.get("/api/data_auction_by_nama_barang/:nama", async function (req, res) {
     let nama = req.params.nama;
     let keyword = `%${nama}%`
@@ -618,6 +628,7 @@ app.get("/api/data_auction_by_nama_barang/:nama", async function (req, res) {
     })
 });
 
+// Nomor 13
 app.get("/api/data_auction_by_id_barang/:id", async function (req, res) {
     let id = req.params.id;
     let barang = await Auction.findAll({
@@ -646,6 +657,7 @@ app.get("/api/data_auction_by_id_barang/:id", async function (req, res) {
     })
 });
 
+// Nomor 14
 app.post("/api/admin/addJenis", async function (req, res) {
 
     try {
@@ -690,6 +702,7 @@ app.post("/api/admin/addJenis", async function (req, res) {
 
 });
 
+// Nomor 15
 app.post("/api/bid_auction", async function (req, res) {
 
     try {
@@ -761,13 +774,10 @@ app.post("/api/bid_auction", async function (req, res) {
     }
 });
 
-
-app.post("/api/admin/deleteItem/:id_barang", async (req, res) => {
+// Nomor 16
+app.delete("/api/admin/deleteItem/:id_barang", async (req, res) => {
 
     try {
-        var { error } = await joi.object({
-            id_barang: joi.string().required(),
-        }).validateAsync(req.body);
 
         let id_barang = req.params.id_barang
         try {
@@ -798,6 +808,7 @@ app.post("/api/admin/deleteItem/:id_barang", async (req, res) => {
     }
 });
 
+// Nomor 17
 app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
 
     try {
@@ -869,6 +880,7 @@ app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
     }
 });
 
+// Nomor 18
 app.post("/api/pengiriman", async (req, res) => {
 
 

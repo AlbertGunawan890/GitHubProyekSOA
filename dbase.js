@@ -1,17 +1,27 @@
 const Sequelize = require("sequelize");
 const db = new Sequelize(
-    'freedb_proyek_soa', // database name
-    'freedb_dbproyeksoa', // database username
-    '$zd4Vmd*SyNUj74', // database password
+    'db_proyek_soa', // database name
+    'root', // database username
+    '', // database password
     {
-        host: 'sql.freedb.tech', // database host
+        host: 'localhost', // database host
         port: 3306, // default MySQL port
         dialect: "mysql",
         logging: true,
         timezone: "+07:00",
-        dialectOptions: {
-            connectTimeout: 30000 }
-        }
+    }
+    // 'freedb_proyek_soa', // database name
+    // 'freedb_dbproyeksoa', // database username
+    // '$zd4Vmd*SyNUj74', // database password
+    // {
+    //     host: 'sql.freedb.tech', // database host
+    //     port: 3306, // default MySQL port
+    //     dialect: "mysql",
+    //     logging: true,
+    //     timezone: "+07:00",
+    //     dialectOptions: {
+    //         connectTimeout: 30000 }
+    //     }
 );
 module.exports = {
     initDB: () => {
