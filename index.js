@@ -377,7 +377,7 @@ app.get("/api/cek_saldo/:userid", async (req, res) => {
             }
         }
         else {
-            return res.status(400).send({"message": "bukan admin"});
+            return res.status(400).send({ "message": "bukan admin" });
         }
     } catch (error) {
         res.status(400).send(error);
@@ -477,7 +477,7 @@ app.get("/api/list_barang/:jenis", async function (req, res) {
             model: Barang,
             include: {
                 model: Jenis,
-                as : 'Jenis',
+                as: 'Jenis',
                 where: {
                     nama_jenis: {
                         [Op.like]: keyword
@@ -545,13 +545,6 @@ app.post("/api/create_auction", async function (req, res) {
 // Nomor 11
 app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) {
 
-    try {
-        var { error } = await joi.object({
-            nama_barang: joi.string().required(),
-            id_jenis: joi.string().required(),
-            harga: joi.string().required(),
-            detail_barang: joi.string().required(),
-        }).validateAsync(req.body);
 
         let barang = null;
         let { nama_barang, id_jenis, harga, detail_barang } = req.body
@@ -577,6 +570,7 @@ app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) 
                 gambar: temp
             })
         } catch (error) {
+            console.log(error);
             return res.status(400).send({
                 message: "Insert Failed",
                 error,
@@ -585,9 +579,7 @@ app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) 
         return res.status(201).send({
             barang
         })
-    } catch (error) {
-        return res.status(400).send(error.toString());
-    }
+
 });
 
 // Nomor 12
@@ -661,7 +653,7 @@ app.get("/api/data_auction_by_id_barang/:id", async function (req, res) {
 app.post("/api/admin/addJenis", async function (req, res) {
 
     try {
-        
+
         let jenis = null;
         let { nama_jenis } = req.body
         const schema = joi.object({
@@ -764,6 +756,7 @@ app.post("/api/bid_auction", async function (req, res) {
                 return res.status(201).send(log);
             }
         } catch (error) {
+            console.log(error);
             return res.status(400).send({
                 message: "Bid Gagal",
                 error,
@@ -786,7 +779,9 @@ app.delete("/api/admin/deleteItem/:id_barang", async (req, res) => {
                     id_barang: id_barang
                 }
             });
-            if (!checkBarang) {
+
+            if (checkBarang.length==0) {
+                
                 throw "Barang tidak ada!!";
             }
             barang = await Barang.destroy({
@@ -811,14 +806,14 @@ app.delete("/api/admin/deleteItem/:id_barang", async (req, res) => {
 // Nomor 17
 app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
 
-    try {
-        var { error } = await joi.object({
-            id_barang: joi.string().required(),
-            nama_barang: joi.string().required(),
-            id_jenis: joi.string().required(),
-            harga: joi.string().required(),
-            detail_barang: joi.string().required(),
-        }).validateAsync(req.body);
+    // try {
+    //     var { error } = await joi.object({
+    //         id_barang: joi.string().required(),
+    //         nama_barang: joi.string().required(),
+    //         id_jenis: joi.string().required(),
+    //         harga: joi.string().required(),
+    //         detail_barang: joi.string().required(),
+    //     }).validateAsync(req.body);
 
 
         let { id_barang, nama_barang, id_jenis, harga, detail_barang } = req.body
@@ -875,9 +870,9 @@ app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
                 error,
             });
         }
-    } catch (error) {
-        return res.status(400).send(error.toString());
-    }
+    // } catch (error) {
+    //     return res.status(400).send(error.toString());
+    // }
 });
 
 // Nomor 18
@@ -893,48 +888,118 @@ app.post("/api/pengiriman", async (req, res) => {
         }).validateAsync(req.body);
 
 
-    let { origin, destination, weight, courier } = req.body;
-    const apikey = req.headers["x-api-key"];
-    let ongkir = "";
-    if (!apikey) {
-        return res.status(404).send({ "message": "Api key harus diisi!" });
-    }
-    let querySearch1 = `https://api.rajaongkir.com/starter/city?key=${apikey}`
-    let getdata1 = await axios.get(querySearch1);
-    let hasil1 = getdata1.data.rajaongkir.results;
-    let { id_origin, id_destination } = "";
-    hasil1.forEach(e => {
-        if (origin == e.city_name) {
-            id_origin = e.city_id;
+        let { origin, destination, weight, courier } = req.body;
+        const apikey = req.headers["x-api-key"];
+        let ongkir = "";
+        if (!apikey) {
+            return res.status(404).send({ "message": "Api key harus diisi!" });
         }
-        if (destination == e.city_name) {
-            id_destination = e.city_id;
-        }
-    });
+        let querySearch1 = `https://api.rajaongkir.com/starter/city?key=${apikey}`
+        let getdata1 = await axios.get(querySearch1);
+        let hasil1 = getdata1.data.rajaongkir.results;
+        let { id_origin, id_destination } = "";
+        hasil1.forEach(e => {
+            if (origin == e.city_name) {
+                id_origin = e.city_id;
+            }
+            if (destination == e.city_name) {
+                id_destination = e.city_id;
+            }
+        });
 
-    const hasil = await axios.post("https://api.rajaongkir.com/starter/cost",
-        {
-            origin: id_origin,
-            destination: id_destination,
-            weight: weight,
-            courier: courier,
-        },
-        {
-            headers: {
-                key: `${apikey}`
+        const hasil = await axios.post("https://api.rajaongkir.com/starter/cost",
+            {
+                origin: id_origin,
+                destination: id_destination,
+                weight: weight,
+                courier: courier,
+            },
+            {
+                headers: {
+                    key: `${apikey}`
+                }
+            }
+        );
+
+        let hasil2 = hasil.data.rajaongkir.results;
+        hasil2.forEach(e => {
+            ongkir = e.costs[0].cost[0].value;
+        });
+
+        return res.status(201).send({
+            message: `Harga pengiriman barang dari ${origin} ke ${destination} sebesar Rp ${ongkir}`
+        })
+    } catch (error) {
+        return res.status(400).send(error.toString());
+    }
+});
+
+// Nomor 19
+app.put("/api/edit/jenis", async (req, res) => {
+    try {
+        var { error } = await joi.object({
+            id_jenis: joi.string().required(),
+            nama: joi.string().required(),
+
+        }).validateAsync(req.body);
+
+        let { id_jenis, nama } = req.body;
+        let cek = await Jenis.findAll({
+            where: {
+                id_jenis: {
+                    [Op.eq]: id_jenis
+                }
+            }
+        })
+        if (cek.length > 0) {
+            let jenis = await Jenis.update({
+                nama_jenis: nama
+            }, {
+                where: {
+                    id_jenis: {
+                        [Op.eq]: id_jenis
+                    }
+                }
+            })
+            return res.status(201).send({
+                message: "berhasil mengupdate jenis"
+            })
+        } else {
+            return res.status(404).send({
+                message: "jenis tidak ditemukan"
+
+            });
+        }
+    } catch (error) {
+        return res.status(400).send(error.toString());
+    }
+});
+
+// Nomor 20
+app.delete("/api/delete/:id_jenis", async (req, res) => {
+    let { id_jenis } = req.params;
+    let cek = await Jenis.findAll({
+        where: {
+            id_jenis: {
+                [Op.eq]: id_jenis
             }
         }
-    );
-
-    let hasil2 = hasil.data.rajaongkir.results;
-    hasil2.forEach(e => {
-        ongkir = e.costs[0].cost[0].value;
-    });
-
-    return res.status(201).send({
-        message: `Harga pengiriman barang dari ${origin} ke ${destination} sebesar Rp ${ongkir}`
     })
-} catch (error) {
-    return res.status(400).send(error.toString());
-}
+    if (cek.length > 0) {
+        let jenis = await Jenis.destroy({
+            where: {
+                id_jenis: {
+                    [Op.eq]: id_jenis
+                }
+            }
+        })
+        return res.status(201).send({
+            message: "Berhasil mendelete jenis"
+        })
+    } else {
+        return res.status(404).send({
+            message: "jenis tidak ditemukan"
+
+        });
+    }
 });
