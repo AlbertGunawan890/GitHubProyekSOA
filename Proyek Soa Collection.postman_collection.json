@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "634e4db5-8fc0-4a17-af62-0ec89bb3e671",
+		"_postman_id": "87242113-83bf-40e8-bf33-6855b223f1d2",
 		"name": "Proyek Soa Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25278569"
+		"_exporter_id": "25308755"
 	},
 	"item": [
 		{
@@ -596,13 +596,7 @@
 			"name": "Cek Ongkir",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "0b41525e69d60e5c490c2a3f5269d789",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
