@@ -21,7 +21,7 @@ const Auction = require("./models/database/auction");
 const log_auction = require("./models/database/log_auction");
 const User = require("./models/database/user");
 const sequelize = getDB();
-// key = 0b41525e69d60e5c490c2a3f5269d789
+
 // const mailjet = Mailjet.apiConnect(
 //     process.env.MJ_APIKEY_PUBLIC,
 //     process.env.MJ_APIKEY_PRIVATE,
@@ -546,39 +546,39 @@ app.post("/api/create_auction", async function (req, res) {
 app.post("/api/admin/addBarang", upd.single('photo'), async function (req, res) {
 
 
-        let barang = null;
-        let { nama_barang, id_jenis, harga, detail_barang } = req.body
-        const schema = joi.object({
-            nama_barang: joi.string().min(10).required(),
-            id_jenis: joi.string().required(),
-            harga: joi.number().min(1000000).required(),
-            detail_barang: joi.string().required()
+    let barang = null;
+    let { nama_barang, id_jenis, harga, detail_barang } = req.body
+    const schema = joi.object({
+        nama_barang: joi.string().min(10).required(),
+        id_jenis: joi.string().required(),
+        harga: joi.number().min(1000000).required(),
+        detail_barang: joi.string().required()
+    })
+    try {
+        await schema.validateAsync(req.body)
+        let newIdPrefix = "B"
+        let keyword = `%${newIdPrefix}%`
+        let similarUID = await Barang.findAll()
+        let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
+        let temp = './uploads/' + req.file.filename;
+        barang = await Barang.create({
+            id_barang: newId,
+            nama_barang: nama_barang,
+            id_jenis: id_jenis,
+            harga: harga,
+            detail_barang: detail_barang,
+            gambar: temp
         })
-        try {
-            await schema.validateAsync(req.body)
-            let newIdPrefix = "B"
-            let keyword = `%${newIdPrefix}%`
-            let similarUID = await Barang.findAll()
-            let newId = newIdPrefix + String(similarUID.length + 1).padStart(4, '0')
-            let temp = './uploads/' + req.file.filename;
-            barang = await Barang.create({
-                id_barang: newId,
-                nama_barang: nama_barang,
-                id_jenis: id_jenis,
-                harga: harga,
-                detail_barang: detail_barang,
-                gambar: temp
-            })
-        } catch (error) {
-            console.log(error);
-            return res.status(400).send({
-                message: "Insert Failed",
-                error,
-            });
-        }
-        return res.status(201).send({
-            barang
-        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send({
+            message: "Insert Failed",
+            error,
+        });
+    }
+    return res.status(201).send({
+        barang
+    })
 
 });
 
@@ -780,8 +780,8 @@ app.delete("/api/admin/deleteItem/:id_barang", async (req, res) => {
                 }
             });
 
-            if (checkBarang.length==0) {
-                
+            if (checkBarang.length == 0) {
+
                 throw "Barang tidak ada!!";
             }
             barang = await Barang.destroy({
@@ -806,78 +806,72 @@ app.delete("/api/admin/deleteItem/:id_barang", async (req, res) => {
 // Nomor 17
 app.put("/api/barang/edit", upd.single("photo"), async function (req, res) {
 
-    // try {
-    //     var { error } = await joi.object({
-    //         id_barang: joi.string().required(),
-    //         nama_barang: joi.string().required(),
-    //         id_jenis: joi.string().required(),
-    //         harga: joi.string().required(),
-    //         detail_barang: joi.string().required(),
-    //     }).validateAsync(req.body);
-
-
-        let { id_barang, nama_barang, id_jenis, harga, detail_barang } = req.body
-        let oldname = "";
-        if (!req.header('x-auth-token')) {
-            fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
-            return res.status(404).send("Unauthorized");
-        }
-        try {
-            let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
-            if (userlogin.userlogin.tipe_user == "admin") {
-                let barang = await Barang.findAll({
-                    where: {
-                        id_barang: id_barang
-                    }
-                })
-                if (barang.length > 0) {
-                    barang.forEach(e => {
-                        oldname = e.gambar
-                    });
-                    let newname = "./uploads/" + req.file.filename;
-                    fs.renameSync(`${newname}`, `${oldname}`)
-                    await Barang.update({
-                        nama_barang: nama_barang,
-                        id_jenis: id_jenis,
-                        harga: harga,
-                        detail_barang: detail_barang,
-                        gambar: newname
-                    },
-                        {
-                            where: {
-                                id_barang: {
-                                    [Op.eq]: id_barang
-                                }
-                            }
-                        });
-
-                    return res.status(201).send({
-                        message: "Barang berhasil diupdate oleh " + userlogin.userlogin.nama_user,
-                        barang
-                    });
-                } else {
-                    fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
-                    return res.status(400).send({
-                        message: "barang tidak ditemukkan"
-                    });
+    let { id_barang, nama_barang, id_jenis, harga, detail_barang } = req.body
+    let oldname = "";
+    if (!req.header('x-auth-token')) {
+        fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
+        return res.status(404).send("Unauthorized");
+    }
+    try {
+        var { error } = await joi.object({
+            id_barang: joi.string().required(),
+            nama_barang: joi.string().required(),
+            id_jenis: joi.string().required(),
+            harga: joi.string().required(),
+            detail_barang: joi.string().required(),
+        }).validateAsync(req.body);
+        let userlogin = jwt.verify(req.header("x-auth-token"), "proyekSOA");
+        if (userlogin.userlogin.tipe_user == "admin") {
+            let barang = await Barang.findAll({
+                where: {
+                    id_barang: id_barang
                 }
+            })
+            if (barang.length > 0) {
+                barang.forEach(e => {
+                    oldname = e.gambar
+                });
+                let newname = "./uploads/" + req.file.filename;
+                fs.renameSync(`${oldname}`, `${newname}`)
+                await Barang.update({
+                    nama_barang: nama_barang,
+                    id_jenis: id_jenis,
+                    harga: harga,
+                    detail_barang: detail_barang,
+                    gambar: newname
+                },
+                    {
+                        where: {
+                            id_barang: {
+                                [Op.eq]: id_barang
+                            }
+                        }
+                    });
 
+                return res.status(201).send({
+                    message: "Barang berhasil diupdate oleh " + userlogin.userlogin.nama_user,
+                    barang
+                });
+            } else {
+                fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
+                return res.status(400).send({
+                    message: "barang tidak ditemukkan"
+                });
             }
-        } catch (error) {
-            fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
-            return res.status(400).send({
-                message: "Update Gagal",
-                error,
-            });
+
         }
-    // } catch (error) {
-    //     return res.status(400).send(error.toString());
-    // }
+    } catch (error) {
+        fs.unlinkSync(`${"./uploads/" + req.file.filename}`);
+        console.log(error);
+        return res.status(400).send({
+            message: "Update Gagal",
+            error,
+        });
+    }
 });
 
 // Nomor 18
 app.post("/api/pengiriman", async (req, res) => {
-
 
     try {
         var { error } = await joi.object({
@@ -887,13 +881,9 @@ app.post("/api/pengiriman", async (req, res) => {
             courier: joi.string().required(),
         }).validateAsync(req.body);
 
-
+        const apikey = "0b41525e69d60e5c490c2a3f5269d789";
         let { origin, destination, weight, courier } = req.body;
-        const apikey = req.headers["x-api-key"];
-        let ongkir = "";
-        if (!apikey) {
-            return res.status(404).send({ "message": "Api key harus diisi!" });
-        }
+
         let querySearch1 = `https://api.rajaongkir.com/starter/city?key=${apikey}`
         let getdata1 = await axios.get(querySearch1);
         let hasil1 = getdata1.data.rajaongkir.results;
