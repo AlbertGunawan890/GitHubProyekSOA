@@ -33,9 +33,9 @@ const sequelize = getDB();
 // secreat key
 // 33fe96eb928ce08377f4b53ef900db19
 
-Barang.belongsTo(Jenis, { as: 'Jenis', foreignKey: "id_jenis" });
-Auction.belongsTo(Barang, { foreignKey: "id_barang" });
-Auction.belongsTo(User, { foreignKey: "pemenang" })
+// Barang.belongsTo(Jenis, { as: 'Jenis', foreignKey: "id_jenis" });
+// Auction.belongsTo(Barang, { foreignKey: "id_barang" });
+// Auction.belongsTo(User, { foreignKey: "pemenang" })
 var myStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, './uploads/')
@@ -649,10 +649,7 @@ app.get("/api/data_auction_by_id_barang/:id", async function (req, res) {
 app.post("/api/admin/addJenis", async function (req, res) {
 
     try {
-        var { error } = await joi.object({
-            nama_jenis: joi.string().required(),
-        }).validateAsync(req.body);
-
+        
         let jenis = null;
         let { nama_jenis } = req.body
         const schema = joi.object({
