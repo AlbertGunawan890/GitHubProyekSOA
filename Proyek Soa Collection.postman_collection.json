@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "87242113-83bf-40e8-bf33-6855b223f1d2",
+		"_postman_id": "04b233ef-0a30-4bd9-a728-5c39064bfe94",
 		"name": "Proyek Soa Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25308755"
+		"_exporter_id": "25278569"
 	},
 	"item": [
 		{
@@ -73,7 +73,8 @@
 						"api",
 						"register"
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi sebagai untuk user melakukan register user baru sebagai admin. Field-field yang haris diisi berupa nama, username, password, nik, alamat, notelp, email, dan tipe_user. Ketika sudah melakukan registrasi maka user akan mendapatkan email konfirmasi."
 			},
 			"response": []
 		},
@@ -144,7 +145,8 @@
 						"api",
 						"register"
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi sebagai untuk user melakukan register user baru sebagai customer. Field-field yang haris diisi berupa nama, username, password, nik, alamat, notelp, email, dan tipe_user. Ketika sudah melakukan registrasi maka user akan mendapatkan email konfirmasi."
 			},
 			"response": []
 		},
@@ -152,23 +154,10 @@
 			"name": "LOGIN",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "sk5y216e2a",
-						"type": "text",
-						"disabled": true
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
-						{
-							"key": "nama",
-							"value": "a",
-							"type": "text",
-							"disabled": true
-						},
 						{
 							"key": "username",
 							"value": "teje",
@@ -178,24 +167,6 @@
 							"key": "password",
 							"value": "a123",
 							"type": "text"
-						},
-						{
-							"key": "nik",
-							"value": "123123",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "alamat",
-							"value": "a",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "notelp",
-							"value": "123123",
-							"type": "text",
-							"disabled": true
 						}
 					]
 				},
@@ -209,7 +180,8 @@
 						"api",
 						"login"
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi pada saat login. User perlu mencantumkan email serta password. Kemudian akan mengembalikan berupa JSONWEBTOKEN atau token yang berfungsi untuk memberikan hak akases endpoint tertentu saja yang boleh dipakai."
 			},
 			"response": []
 		},
@@ -239,7 +211,8 @@
 						"admin",
 						"addJenis"
 					]
-				}
+				},
+				"description": "endpoint berfungsi untuk menambahkan jenis untuk barang yang dilelang."
 			},
 			"response": []
 		},
@@ -279,7 +252,8 @@
 						"admin",
 						"addBarang"
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi agar menambhakan barang yang akan dilelang. Endpoint ini memiliki field-filed yang harus di isi yaitu : nama_barang, id_jenis, harga, dan detail_barang."
 			},
 			"response": []
 		},
@@ -339,7 +313,8 @@
 						"api",
 						"create_auction"
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi agar dapat memulai acaranya lelang. Dalam endpoint ini terdapat field-field yang harus terisi yaitu : nama, tanggal, waktu_awal, waktu_akhir, id_barang, minimal_bid. Endpoint ini hanya dapat di akses dengan JSONWEBTOKEN atau token tipe_user \"admin\"."
 			},
 			"response": []
 		},
@@ -417,7 +392,8 @@
 						"api",
 						"bid_auction"
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi agar user customer dapat melakukan bid atau penawaran selama waktu lelang berjalan. Dalam endpoint ini terdapat field-field yang harus terisi yaitu : id_auction dan bid. Endpoint ini hanya dapat di akses dengan JSONWEBTOKEN atau token tipe_user \"customer\". Bid atau penawaran yang dapat dilakukan yaitu dengan adanya kelipatan bid yang sudah ditentukan."
 			},
 			"response": []
 		},
@@ -443,7 +419,8 @@
 							"value": "m"
 						}
 					]
-				}
+				},
+				"description": "Endpoint ini merupakan agar dapat menampilkan setiap barang yang ada pada database. Data yang dikeluarkan berupa list data. Endpoint ini menggunakan parameter atau _params_ bertujuan agar langgsung menulis jenisnya dalam bentuk parameter. untuk \":jenis\" merupakan keyword menggunakan like sehingga ketika menggunakan satu huruf saja dapat mengeluarkan data yang mengandung dengan huruf yang ditulis di _params._"
 			},
 			"response": []
 		},
@@ -469,7 +446,8 @@
 							"value": "B0001"
 						}
 					]
-				}
+				},
+				"description": "Endpoint ini merupakan agar dapat menampilkan setiap barang yang ada pada database. Data yang dikeluarkan berupa list data. Endpoint ini menggunakan parameter atau _params_ bertujuan agar langgsung menulis jenisnya dalam bentuk parameter. untuk \":id\" merupakan keyword yang dicari sehingga jika tidak ditekmukan id dari data auctioin tersebut maka tidak akan mengeluarkan datanya."
 			},
 			"response": []
 		},
@@ -495,7 +473,8 @@
 							"value": "ini"
 						}
 					]
-				}
+				},
+				"description": "Endpoint ini merupakan agar dapat menampilkan setiap barang yang ada pada database. Data yang dikeluarkan berupa list data. Endpoint ini menggunakan parameter atau _params_ bertujuan agar langgsung menulis jenisnya dalam bentuk parameter. untuk \":nama\" merupakan keyword menggunakan like sehingga ketika menggunakan satu huruf saja dapat mengeluarkan data yang mengandung dengan huruf yang ditulis di _params._"
 			},
 			"response": []
 		},
@@ -527,7 +506,8 @@
 						"api",
 						"list-winning"
 					]
-				}
+				},
+				"description": "Endpoint ini agar dapat mengelurkan data pemenang lelang berdasarkan waktu. Yang dapat akses untuk melakukan list-winning yaitu \"admin\"."
 			},
 			"response": []
 		},
