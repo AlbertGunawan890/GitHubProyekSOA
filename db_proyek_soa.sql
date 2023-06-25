@@ -1,5 +1,5 @@
 /*
-SQLyog Community v13.2.0 (64 bit)
+SQLyog Community v13.1.9 (64 bit)
 MySQL - 10.4.27-MariaDB : Database - db_proyek_soa
 *********************************************************************
 */
@@ -32,8 +32,8 @@ CREATE TABLE `auction` (
   PRIMARY KEY (`id_auction`),
   KEY `id_barang` (`id_barang`),
   KEY `pemenang` (`pemenang`),
-  CONSTRAINT `auction_ibfk_3` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `auction_ibfk_4` FOREIGN KEY (`pemenang`) REFERENCES `users` (`id_user`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `auction_ibfk_7` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `auction_ibfk_8` FOREIGN KEY (`pemenang`) REFERENCES `users` (`id_user`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `auction` */
@@ -118,10 +118,11 @@ CREATE TABLE `users` (
 /*Data for the table `users` */
 
 insert  into `users`(`id_user`,`nama_user`,`username_user`,`password_user`,`nik_user`,`alamat_user`,`notelp_user`,`tipe_user`,`saldo_user`,`status_user`,`email_user`) values 
-('A001','tay','gfhf','$2b$10$KU36thtI8dSak6aqM3GXwOg3ZigPNo1a4rJd.kA7iIUn3ndwy/uTG',123123,'taytduy',2147483647,'admin','0','1','albertgunawanongko890@gmail.com'),
+('A001','tay','gfhf','$2b$10$KU36thtI8dSak6aqM3GXwOg3ZigPNo1a4rJd.kA7iIUn3ndwy/uTG',123123,'taytduy',2147483647,'admin','30000','1','albertgunawanongko890@gmail.com'),
 ('A002','tay','gfhf','$2b$10$2Gg.hK8DaLxOGNVC/ATbFecBLah5MOabGTYQEuSo2t8eURBDMHyru',123123,'taytduy',2147483647,'admin','0','1','albertgunawanongko890@gmail.com'),
 ('A003','tay','gfhf','$2b$10$HVEvRWkWif1sZlo/fQLN4e3nA0JkNHZGzE0cVhXjNW034o/4PIhmq',123123,'taytduy',2147483647,'admin','0','1','albertgunawanongko890@gmail.com'),
-('A004','tay','gfhf','$2b$10$RU3AKg8r/7yXOowJlZ8D8exp45BNGn1OE82nKLjYl4rQtYIWuaYf2',123123,'taytduy',2147483647,'admin','0','1','albertgunawanongko890@gmail.com');
+('A004','tay','gfhf','$2b$10$RU3AKg8r/7yXOowJlZ8D8exp45BNGn1OE82nKLjYl4rQtYIWuaYf2',123123,'taytduy',2147483647,'admin','0','1','albertgunawanongko890@gmail.com'),
+('A005','a','tejewe','$2b$10$MWPuyPKqejsIzubBZqa4UuaoiP6aBrlb3dggwzW049ch8KMWr6Bty',123123,'a',123123,'admin','0','1','teje@gmail.com');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
