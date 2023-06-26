@@ -35,7 +35,10 @@ const sequelize = getDB();
 
 Barang.belongsTo(Jenis, { as: 'Jenis', foreignKey: "id_jenis" });
 Auction.belongsTo(Barang, { foreignKey: "id_barang" });
-Auction.belongsTo(User, { foreignKey: "pemenang" })
+Auction.belongsTo(User, { foreignKey: "pemenang" });
+Auction.hasMany(log_auction, { foreignKey: "id_auction" });
+log_auction.belongsTo(Auction, { foreignKey: "id_auction" });
+
 var myStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, './uploads/')
@@ -398,20 +401,39 @@ app.get("/api/list-winning", async function (req, res) {
                 }
             },
             attributes: ['id_auction', 'tanggal'],
-            include: [{
-                model: User,
-                attributes: ['nama_user'],
-            },
-            {
-                model: Barang,
-                attributes: ['nama_barang', 'harga', 'detail_barang'],
-            }],
-        })
-        if (winner.length > 0) {
-            return res.status(200).send(winner);
-        } else {
+            include: [
+                // {
+                //     model: User,
+                //     attributes: ['nama_user'],
+                // },
+                // {
+                //     model: Barang,
+                //     attributes: ['nama_barang', 'harga', 'detail_barang'],
+                // },
+                {
+                    model: log_auction
+                    // order: ['id_log', 'DESC']
+                },
+            ],
 
-            return res.status(400).send({ "message": "Belum pernah memenangkan auction" });
+        })
+        // return res.status(200).send(winner);
+        if (winner.length >0) {
+            // console.log(winner);
+            let sample = [];
+            for (let i = 0; i < winner.length; i++) {
+                var tambahan = parseInt(winner[i].log_auctions[0].dataValues.bid) * (0.025);
+                let temp = {
+                    "id_auction": winner[i].id_auction,
+                    "tanggal": winner[i].tanggal,
+                    "log_auctions": winner[i].log_auctions,
+                    "total": parseInt(winner[i].log_auctions[0].dataValues.bid) + tambahan,
+                }
+                sample.push(temp);
+                console.log(temp);
+            }
+
+            return res.status(200).send(sample);
         }
     } catch (error) {
         res.status(404).send(error);
@@ -741,6 +763,7 @@ app.post("/api/bid_auction", async function (req, res) {
                     "bid": bid,
                     "waktu": jam
                 });
+                // const tambahan=bid+2.5%;
                 await Auction.update({
                     pemenang: userlogin.userlogin.id_user
                 },
