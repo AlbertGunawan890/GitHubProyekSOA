@@ -28,7 +28,7 @@
 						},
 						{
 							"key": "username",
-							"value": "tejewe",
+							"value": "qqq",
 							"type": "text"
 						},
 						{
@@ -64,11 +64,12 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/register",
+					"raw": "fern-four-sole.glitch.me/api/register",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"register"
@@ -160,22 +161,23 @@
 					"urlencoded": [
 						{
 							"key": "username",
-							"value": "teje",
+							"value": "qqq",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "a123",
+							"value": "123",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/login",
+					"raw": "fern-four-sole.glitch.me/api/login",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"login"
@@ -222,31 +224,42 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
+					"mode": "formdata",
+					"formdata": [
 						{
 							"key": "nama_barang",
-							"value": "initestuploadbarang",
-							"type": "default"
+							"value": "Laptop ROG",
+							"type": "text"
 						},
 						{
 							"key": "id_jenis",
-							"value": "T0001",
-							"type": "default"
+							"value": "L0001",
+							"type": "text"
 						},
 						{
 							"key": "harga",
-							"value": "1000000",
-							"type": "default"
+							"value": "10000000",
+							"type": "text"
+						},
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "/D:/KalenderAkademikGenap20212022.jpg"
+						},
+						{
+							"key": "detail_barang",
+							"value": "barang baru",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/admin/addBarang",
+					"raw": "fern-four-sole.glitch.me/api/admin/addBarang",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"admin",
@@ -264,7 +277,7 @@
 				"header": [
 					{
 						"key": "x-auth-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDIiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUiLCJlbWFpbF91c2VyIjoidGVqZUBnbWFpbC5jb20iLCJwYXNzd29yZF91c2VyIjoiJDJiJDEwJFFoQWNqTTFvNWR0eXBNUzM3UzRsQmVtQlkyS011dzBXWjExMWZOeldXdFFIelp5bXF0azlLIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiYWRtaW4iLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODcyMzgyNjAsImV4cCI6MTY4NzI1NjI2MH0.KRxoWXK9tOrzQVmHVZN2OjwqEtDyXguX7dacyWC6k7U",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InFxcSIsImVtYWlsX3VzZXIiOiJ0ZWplQGdtYWlsLmNvbSIsInBhc3N3b3JkX3VzZXIiOiIkMmIkMTAkaVVqSnJ1NTNHdUhoUlBsdlJJTUhMZU5PMDg3a0tSWjcvY0JXUFp0Q0E4SThUV2oyeEVEVmEiLCJuaWtfdXNlciI6MTIzMTIzLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJhZG1pbiIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzgyMzkyOCwiZXhwIjoxNjg3ODQxOTI4fQ.LXZsWMAMp2Ky5Z3hGxoYYl2qCkoUKO2yhWojwBtS1Ps",
 						"type": "text"
 					}
 				],
@@ -304,11 +317,12 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/create_auction",
+					"raw": "fern-four-sole.glitch.me/api/create_auction",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"create_auction"
@@ -331,11 +345,12 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "localhost:3000/api/list_barang/:min/:max",
+					"raw": "fern-four-sole.glitch.me/api/list_barang/:min/:max",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"list_barang",
@@ -345,14 +360,15 @@
 					"variable": [
 						{
 							"key": "min",
-							"value": "5000"
+							"value": "50"
 						},
 						{
 							"key": "max",
-							"value": "20000"
+							"value": "5000"
 						}
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi sebagai menampilkan barang berupa list dengan adanya jarak harga yang dicari.  \n:min = untuk mencari harga awal  \n:max = untuk mencari harga akhir\n\nEndpoint ini seperti untuk melakukan pencarian filter harga terendah dan harga tertinggi."
 			},
 			"response": []
 		},
@@ -363,7 +379,7 @@
 				"header": [
 					{
 						"key": "x-auth-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDMiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUxIiwiZW1haWxfdXNlciI6InRlamVAZ21haWwuY29tIiwicGFzc3dvcmRfdXNlciI6IiQyYiQxMCRwejJGL1RQODl0M1VvdHI4VXVBRzJlVmJ0NWxrNTB3RzRHQTdRWTR3MmRTOWFmNGRQRzJFTyIsIm5pa191c2VyIjoxMjMxMjMsImFsYW1hdF91c2VyIjoiYSIsIm5vdGVscF91c2VyIjoxMjMxMjMsInRpcGVfdXNlciI6ImN1c3RvbWVyIiwic2FsZG9fdXNlciI6IjAiLCJzdGF0dXNfdXNlciI6IjEifSwiaWF0IjoxNjg3MjM5NTA2LCJleHAiOjE2ODcyNTc1MDZ9.oERIAOFmzQt9ifwsntOPWiDDO0jM_1OMTWuzCDHAFf8",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDQiLCJuYW1hX3VzZXIiOiJhMTIzMTMyMTMxMjMxMjMiLCJ1c2VybmFtZV91c2VyIjoiYWFhYSIsImVtYWlsX3VzZXIiOiJ0ZWplQGdtYWlsLmNvbSIsInBhc3N3b3JkX3VzZXIiOiIkMmIkMTAkTnRsWWRFSGlPWXhKdWVXdGwyN3hLLjB0bUltNTNRRi5RZENSUkVoak9oanpvWTllaXNZN2EiLCJuaWtfdXNlciI6MTIzMTIzLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJjdXN0b21lciIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzgyNjM0MCwiZXhwIjoxNjg3ODQ0MzQwfQ.01xclApKQOyevzsdiWjBjm_pD7b5zYxNEBhEfHWyobU",
 						"type": "text"
 					}
 				],
@@ -372,22 +388,23 @@
 					"urlencoded": [
 						{
 							"key": "id_auction",
-							"value": "A0003",
+							"value": "A0004",
 							"type": "text"
 						},
 						{
 							"key": "bid",
-							"value": "1005",
+							"value": "5000",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/bid_auction",
+					"raw": "fern-four-sole.glitch.me/api/bid_auction",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"bid_auction"
@@ -403,11 +420,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/list_barang/:jenis",
+					"raw": "fern-four-sole.glitch.me/api/list_barang/:jenis",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"list_barang",
@@ -416,7 +434,7 @@
 					"variable": [
 						{
 							"key": "jenis",
-							"value": "m"
+							"value": "S0001"
 						}
 					]
 				},
@@ -430,11 +448,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/data_auction_by_id_barang/:id",
+					"raw": "fern-four-sole.glitch.me/api/data_auction_by_id_barang/:id",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"data_auction_by_id_barang",
@@ -453,15 +472,23 @@
 		},
 		{
 			"name": "Data Auction by Name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
 				"url": {
-					"raw": "localhost:3000/api/data_auction_by_nama_barang/:nama",
+					"raw": "fern-four-sole.glitch.me/api/data_auction_by_nama_barang/:nama",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"data_auction_by_nama_barang",
@@ -470,7 +497,7 @@
 					"variable": [
 						{
 							"key": "nama",
-							"value": "ini"
+							"value": "in"
 						}
 					]
 				},
@@ -488,7 +515,7 @@
 				"header": [
 					{
 						"key": "x-auth-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUiLCJlbWFpbF91c2VyIjoidGVqZUBnbWFpbC5jb20iLCJwYXNzd29yZF91c2VyIjoiJDJiJDEwJE82ZWQwVjlNOE1JTHlQTjFnVC42Zi5Ha0t2R05Pb3lZUG9vS1lDbkYwSU1zcklycFBjQ1gyIiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiY3VzdG9tZXIiLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODcyNDc3NDgsImV4cCI6MTY4NzI2NTc0OH0.cSi3fA5iMaiLz6n9MjrsTMWNvOzye2x3erFzktOTpng",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDQiLCJuYW1hX3VzZXIiOiJhMTIzMTMyMTMxMjMxMjMiLCJ1c2VybmFtZV91c2VyIjoiYWFhYSIsImVtYWlsX3VzZXIiOiJ0ZWplQGdtYWlsLmNvbSIsInBhc3N3b3JkX3VzZXIiOiIkMmIkMTAkTnRsWWRFSGlPWXhKdWVXdGwyN3hLLjB0bUltNTNRRi5RZENSUkVoak9oanpvWTllaXNZN2EiLCJuaWtfdXNlciI6MTIzMTIzLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJjdXN0b21lciIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzgyNjM0MCwiZXhwIjoxNjg3ODQ0MzQwfQ.01xclApKQOyevzsdiWjBjm_pD7b5zYxNEBhEfHWyobU",
 						"type": "text"
 					}
 				],
@@ -497,11 +524,12 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "localhost:3000/api/list-winning",
+					"raw": "fern-four-sole.glitch.me/api/list-winning",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"list-winning"
@@ -542,7 +570,7 @@
 						},
 						{
 							"key": "harga",
-							"value": "10000",
+							"value": "100000",
 							"type": "text"
 						},
 						{
@@ -558,17 +586,19 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/barang/edit",
+					"raw": "fern-four-sole.glitch.me/api/barang/edit",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"barang",
 						"edit"
 					]
-				}
+				},
+				"description": "Endpoint ini bertujuan untuk melakukan edit dari spesifikasi barang."
 			},
 			"response": []
 		},
@@ -603,16 +633,18 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/pengiriman",
+					"raw": "fern-four-sole.glitch.me/api/pengiriman",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"pengiriman"
 					]
-				}
+				},
+				"description": "Endpoint ini berfungsi agar user dapat melihat harga pengiriman barang dari kota awal hingga kota tujuan dengan berat barang tersebut. Nantinya akan mengeluarkan harga untuk ongkos pengiriman"
 			},
 			"response": []
 		},
@@ -623,7 +655,7 @@
 				"header": [
 					{
 						"key": "x-auth-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6IndlIiwiZW1haWxfdXNlciI6ImFsYmVydC5nMjBAbWhzLmlzdHRzLmFjLmlkIiwicGFzc3dvcmRfdXNlciI6IiQyYiQxMCREdEcxemFhTThlLmdMRy5CTjRCSkF1WmJrcHVkZW9ISjZ6eUkwREJ4MHJoRi5WU2YyZlFDQyIsIm5pa191c2VyIjoxMjMxMjMxMjMxLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJhZG1pbiIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzUwNTI3NywiZXhwIjoxNjg3NTIzMjc3fQ.ftdsn63OnNX6KgsNGtDXELzLsUltyL_vPLmIai_lj1g",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InFxcSIsImVtYWlsX3VzZXIiOiJ0ZWplQGdtYWlsLmNvbSIsInBhc3N3b3JkX3VzZXIiOiIkMmIkMTAkaVVqSnJ1NTNHdUhoUlBsdlJJTUhMZU5PMDg3a0tSWjcvY0JXUFp0Q0E4SThUV2oyeEVEVmEiLCJuaWtfdXNlciI6MTIzMTIzLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJhZG1pbiIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzgyOTIwOSwiZXhwIjoxNjg3ODQ3MjA5fQ.XSeaRDXC1Wq0vTPiWH6uRblav81STshOPKKZvqZho_Y",
 						"type": "text"
 					}
 				],
@@ -638,17 +670,19 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/topup/A001",
+					"raw": "fern-four-sole.glitch.me/api/topup/A001",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"topup",
 						"A001"
 					]
-				}
+				},
+				"description": "Endpoint ini bertujuan untuk melakukan topup isi saldo user. Dengan melakukan topup, maka user dapat melakukan pembelian penawaran. Endpoint ini menggunakannya dengan params dari id user yang di inginkan untuk melakukan pengisian topup"
 			},
 			"response": []
 		},
@@ -662,7 +696,7 @@
 				"header": [
 					{
 						"key": "x-auth-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InRlamUiLCJlbWFpbF91c2VyIjoidGVqZUBnbWFpbC5jb20iLCJwYXNzd29yZF91c2VyIjoiJDJiJDEwJDdBc0MzZDJqaGlzR3g2bkxvMG9mdy5OM0ZsckE1RVZzS0dHcXZVVTZaNmV2VU9zMVI1eWc2IiwibmlrX3VzZXIiOjEyMzEyMywiYWxhbWF0X3VzZXIiOiJhIiwibm90ZWxwX3VzZXIiOjEyMzEyMywidGlwZV91c2VyIjoiY3VzdG9tZXIiLCJzYWxkb191c2VyIjoiMCIsInN0YXR1c191c2VyIjoiMSJ9LCJpYXQiOjE2ODc1MDU5NDgsImV4cCI6MTY4NzUyMzk0OH0.gwmKlfdzXs5DD1BszmOkTIvKOE-QYlXCMqyJeySctfQ",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkMwMDQiLCJuYW1hX3VzZXIiOiJhMTIzMTMyMTMxMjMxMjMiLCJ1c2VybmFtZV91c2VyIjoiYWFhYSIsImVtYWlsX3VzZXIiOiJ0ZWplQGdtYWlsLmNvbSIsInBhc3N3b3JkX3VzZXIiOiIkMmIkMTAkTnRsWWRFSGlPWXhKdWVXdGwyN3hLLjB0bUltNTNRRi5RZENSUkVoak9oanpvWTllaXNZN2EiLCJuaWtfdXNlciI6MTIzMTIzLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJjdXN0b21lciIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzgyOTI4NywiZXhwIjoxNjg3ODQ3Mjg3fQ.Rm8U3l_66d5IfLUBYicJNdv2Ahn7mxuQLUZMLy9cado",
 						"type": "text"
 					}
 				],
@@ -671,17 +705,19 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "localhost:3000/api/cek_saldo/A001",
+					"raw": "fern-four-sole.glitch.me/api/cek_saldo/A001",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cek_saldo",
 						"A001"
 					]
-				}
+				},
+				"description": "Endpoint ini bertujuan agar user dapat melihat saldo yang dipunyai sebelum maupun sesudah melakukan topup saldo."
 			},
 			"response": []
 		},
@@ -725,38 +761,8 @@
 							"value": "B0004"
 						}
 					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "List Barang Min Max",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/api/list_barang/:min/:max",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"list_barang",
-						":min",
-						":max"
-					],
-					"variable": [
-						{
-							"key": "min",
-							"value": null
-						},
-						{
-							"key": "max",
-							"value": null
-						}
-					]
-				}
+				},
+				"description": "Endpoint ini bertujuan untuk melakukan delete pada barang yang sudah pernah di inputkan. Menghapus barang dengan cara memasukan memasukan id dari barang tersebut"
 			},
 			"response": []
 		},
@@ -773,17 +779,19 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "localhost:3000/api/search_action/A0001",
+					"raw": "fern-four-sole.glitch.me/api/search_action/A0001",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"search_action",
 						"A0001"
 					]
-				}
+				},
+				"description": "Endpoint ini bertujuan untuk user dapat melihat dengan keyword yang dipunyai. Ketika sudah memasukan maka nanti akan mengeluarkan datanya."
 			},
 			"response": []
 		},
@@ -808,17 +816,19 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/edit/jenis",
+					"raw": "fern-four-sole.glitch.me/api/edit/jenis",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"edit",
 						"jenis"
 					]
-				}
+				},
+				"description": "Endpoint ini bertujuan untuk melakukan perubahan data seperti nama jenis nya."
 			},
 			"response": []
 		},
@@ -832,23 +842,62 @@
 					"urlencoded": [
 						{
 							"key": "id_jenis",
-							"value": "P0001",
+							"value": "S0001",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:3000/api/delete/jenis",
+					"raw": "fern-four-sole.glitch.me/api/delete/jenis",
 					"host": [
-						"localhost"
+						"fern-four-sole",
+						"glitch",
+						"me"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"delete",
 						"jenis"
 					]
-				}
+				},
+				"description": "Endpoint ini bertujuan untuk melakukan hapus data jenis dengan cara params di akhir diberikan id_jenis"
+			},
+			"response": []
+		},
+		{
+			"name": "Ban User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybG9naW4iOnsiaWRfdXNlciI6IkEwMDUiLCJuYW1hX3VzZXIiOiJhIiwidXNlcm5hbWVfdXNlciI6InFxcSIsImVtYWlsX3VzZXIiOiJ0ZWplQGdtYWlsLmNvbSIsInBhc3N3b3JkX3VzZXIiOiIkMmIkMTAkaVVqSnJ1NTNHdUhoUlBsdlJJTUhMZU5PMDg3a0tSWjcvY0JXUFp0Q0E4SThUV2oyeEVEVmEiLCJuaWtfdXNlciI6MTIzMTIzLCJhbGFtYXRfdXNlciI6ImEiLCJub3RlbHBfdXNlciI6MTIzMTIzLCJ0aXBlX3VzZXIiOiJhZG1pbiIsInNhbGRvX3VzZXIiOiIwIiwic3RhdHVzX3VzZXIiOiIxIn0sImlhdCI6MTY4NzgzNjY5NywiZXhwIjoxNjg3ODU0Njk3fQ.agMC-Va2X95hjqvprT2vKpjlcpMmAzOswwEsxBxuoF0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userid",
+							"value": "A001",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "fern-four-sole.glitch.me/api/banuser",
+					"host": [
+						"fern-four-sole",
+						"glitch",
+						"me"
+					],
+					"path": [
+						"api",
+						"banuser"
+					]
+				},
+				"description": "Endpopint ini bertujuan agar dapat melakukan ban pada user yang di inginkan oleh admin."
 			},
 			"response": []
 		}
